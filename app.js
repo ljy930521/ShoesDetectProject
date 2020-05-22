@@ -60,7 +60,6 @@ app.get('/item', function (req, res) {
         // item
         try {
             dbModule.getAllItems(function (item) {
-                console.log(item);
                 wm.getWeather(function (weather) {
                     let navBar = template.navBar(false, weather, req.session.userName);
                     let menuLink = template.menuLink(1);
@@ -84,10 +83,10 @@ app.get('/conveyor', function (req, res) {
         // item
         try {
             dbModule.getAllItems(function (conveyor) {
-                console.log(conveyor);
+            
                 wm.getWeather(function (weather) {
                     let navBar = template.navBar(false, weather, req.session.userName);
-                    let menuLink = template.menuLink(1);
+                    let menuLink = template.menuLink(2);
                     let view = require('./view/conveyor');
                     let html = view.conveyor(navBar, menuLink, conveyor);
                     res.send(html);

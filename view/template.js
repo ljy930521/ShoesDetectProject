@@ -24,15 +24,15 @@ module.exports = {
     },
     menuLink: function(menu) {
         let itemLink = `<a class="nav-link" href="/item">Shoes List</a>`;
-        let conveyorLink = `<a class="nav-link" href="/conveyor">Conveyor Actuator</a>`;
+        let conveyorLink = `<a class="nav-link" href="/conveyor">Conveyor</a>`;
         let userLink = `<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">`;
         let galleryLink = `<a class="nav-link" href="/gallery">갤러리</a>`;
         switch(menu) {
             case 1:     // Sensor 메뉴를 눌렀을 경우
                 itemLink = `<a class="nav-link active" href="#">Shoes List</a>`;
                 break;
-            case 2:     // Actuator 메뉴를 눌렀을 경우
-                conveyorLink = `<a class="nav-link active" href="#">Conveyor Actuator</a>`;
+            case 2:     //  메뉴를 눌렀을 경우
+                conveyorLink = `<a class="nav-link active" href="#">Conveyor</a>`;
                 break;
             case 3:     // User 메뉴를 눌렀을 경우
                 userLink = `<a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">`;
