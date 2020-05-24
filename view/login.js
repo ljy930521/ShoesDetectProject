@@ -10,13 +10,13 @@ module.exports.login = function() {
 </head>
 <body>
 	<div class="container">
-		<div class="row">
+		<div class="row" style="text-align: center;">
 			<div class="col-1"></div>
 			<div class="col-10">
 				<div class="jumbotron">
-					<a href="/"><img src="/greenlogo.png"></a>
-					<p><h2>로그인</h2></p>
-					<p><h5>강남 스마트팜 시스템을 이용하려면 로그인을 해주세요.</h5></p>
+					<a href="/"><img src="/public/shoes.png"></a>
+					<p><h2>Login</h2></p>
+					<p><h5>Shoes Detect Program Login.</h5></p>
 				</div><br><br>
 				<form action="/user/login" class="form-horizontal" method="POST">
 					<div class="form-group row">

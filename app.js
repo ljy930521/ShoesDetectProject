@@ -25,7 +25,7 @@ app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(session({
     secret: 'keyboard cat',
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     store: new FileStore({
         logFn: function () {}
     })
