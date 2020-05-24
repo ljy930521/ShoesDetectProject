@@ -2,6 +2,7 @@ const template = require('./template');
 const header = template.header();
 module.exports.conveyor = function (navBar, menuLink, itemObj) {
 
+
 let items = '';
 for (item of itemObj) {
 items += `
@@ -12,7 +13,7 @@ items += `
   </div>
   <div class="col-4"><div class="form-check">
         <label class="form-check-label">
-          <input type="radio" class="form-check-input" name="itemChoose" value="${item.iid}">
+          <input type="radio" class="form-check-input" name="itemChoose" value="${item.itemName}">
         </label>
       </div></div>
 `;
@@ -45,10 +46,26 @@ Open modal
     
     <!-- Modal footer -->
     <div class="modal-footer">
-      <button type="button" class="btn btn-dark" data-dismiss="modal">Choose</button>
+      <button type="button" class="btn btn-dark" data-dismiss="modal" onclick="displayRadioValue()">Choose</button>
       <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
     </div>
-    
+    <br>  
+       
+    <script> 
+        function displayRadioValue() { 
+            var ele = document.getElementsByName('itemChoose'); 
+
+            for(i = 0; i < ele.length; i++) { 
+                if(ele[i].checked)
+                {
+                  document.getElementById("result").innerHTML
+                        = "Selected: "+ele[i].value;
+                  document.getElementById("chooseShoes").src
+                = "/images/"+ele[i].value+".jpg";
+                }
+            }
+        }
+    </script> 
   </div>
 </div>`
 
@@ -73,10 +90,14 @@ return `
           <div class="col-2"><h3>신발선택</h3></div>
           <div class="col-10"><h3>컨베이어 작동</h3></div>
           <div class="col-12"><hr></div>
-          <div class="col-2"><img src="/images/Shoes.jpg" width="100" height="100"  class="rounded" alt="Cinque Terre"><br>${chooseModal}</div>
-          <div class="col-10"></div>
-
-        </div>
+          <div class="col-2">
+          <img id="chooseShoes" src="/images/Shoes Name.jpg" width="100" height="100"  class="rounded" alt="Cinque Terre"><br>
+          <div id="result"></div>
+          <br>${chooseModal}</div>
+          </div>
+          <div class="col-10">
+          <img id="chooseShoes" src="/images/conveyor.png" width="600" height="200"  class="rounded" alt="Cinque Terre">
+          </div>
       </div>
     </div>
   </div>

@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <title>JunYoung's Life</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+        integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <style>
+        /* Make the image fully responsive */
+        .carousel-inner img {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- container-navbar -->
+    <div class="container">
+        <nav class="navbar navbar-expand-sm bg-dark navbar-dark" style="text-align: center;">
+
+            <a class="navbar-brand" href="#">
+                <img src="대지 15.png" style="width:100px;" class="d-inline-block align-top" alt="">&nbsp;&nbsp;&nbsp;
+            </a>
+            <ul class="nav nav-pills mr-auto" style="text-align: center;">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Logout</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true"></a>
+                </li>
+            </ul>
+            <div class="navbar-text">
+                <p>날씨</p>
+                <p>관리자로그인중</p>
+            </div>
+        </nav>
+    </div>
+    <br>
+    <!-- container -->
+    <div class="container">
+        <div class="row">
+            <!-- col-sm-menu -->
+            <div class="col-sm-2 text-center">
+                <!-- 광고판 -->
+                <div class="jumbotron-drak">
+
+                    <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#myModal">
+                        <h6>AD CALL ME</h6>
+                    </button>
+                </div>
+
+                <div class="modal" id="myModal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+
+                            <!-- Modal Header -->
+                            <div class="modal-header">
+                                <h4 class="modal-title">E-Mail</h4>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+
+                            <!-- Modal body -->
+                            <div class="modal-body">
+                                <span style="color: gold;"><i
+                                        class="fas fa-won-sign"></i></span>ljy930521@naver.com<span
+                                    style="color: gold;"><i class="fas fa-won-sign"></i></span>
+                            </div>
+
+                            <!-- Modal footer -->
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="alert alert-dark text-center">
+                    <strong>Click me!</strong><br>광고시간!
+                    <img src="Clickme.png" style="width:200px;" class="img-thumbnail" alt="Cinque Terre" ,
+                        onClick="window.open('https://www.instagram.com/jun0.0lee/?hl=ko')">
+                </div>
+                <!-- 메인메뉴 -->
+                <br>
+                <div class="row justify-content-center">
+                    <h5>My Technology</h5>
+                    <div class="dropdown justify-content-center">
+                        <button type="button" class="btn btn-basic dropdown-toggle" data-toggle="dropdown">
+                            <span style="color:crimson;"><i class="fab fa-raspberry-pi"></i></span> Raspberry Pi
+                        </button>
+                        <div class="dropdown-menu ">
+                            <a class="dropdown-item" href="#">우분투설치</a>
+                            <a class="dropdown-item" href="#">원격환경맞추기</a>
+                            <a class="dropdown-item" href="#">OPENCV연동</a>
+                            <a class="dropdown-item" href="#">영상처리</a>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="dropdown">
+                        <button type="button" class="btn btn-basic dropdown-toggle" data-toggle="dropdown">
+                            <span style="color:rgb(27, 202, 173)"><i class="fas fa-infinity"></i></span> ARDUINO
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#">GPIO H/W,S/W</a>
+                            <a class="dropdown-item" href="#">기본적인 센서 다루기</a>
+                            <a class="dropdown-item" href="#">Serial통신</a>
+                            <a class="dropdown-item" href="#">BLYNK어플 연동</a>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="dropdown">
+                        <button type="button" class="btn btn-basic dropdown-toggle" data-toggle="dropdown">
+                            <span style="color:orange"><i class="fab fa-python"></i></span> PYTHON
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#">Anaconda Install</a>
+                            <a class="dropdown-item" href="#">Pandas & Numpy</a>
+                            <a class="dropdown-item" href="#">데이터 크롤링 실습</a>
+                            <a class="dropdown-item" href="#">라즈베리파이에서 영상처리</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- col-sm-myprofile -->
+            <div class="col-sm-2">
+                <div class="card">
+                    <img class="card-img-top" src="자소서.jpg" alt="Card image">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">JunYoung Lee</h5>
+                        <h6 class="card-title">IoT</h6>
+                        <p class="card-text">
+                            <span style="color: black;"><i class="fas fa-bed"></i></span>
+                            <a href="#" style="color: black;" data-toggle="popover" data-placement="right"
+                                data-content=" It means the new generation that grows up with hope for the future.(Korean)">
+                                DreamTree
+                            </a>
+                            <span style="color: green;"><i class="fas fa-tree"></i></span>
+                        </p>
+                        <a href="#" class="btn btn-dark"
+                            onClick="window.open('https://github.com/ljy930521')">GitHub</a>
+                        <br>
+                        <a href="#" class="btn btn-dark"
+                            onClick="window.open('https://www.instagram.com/jun.ingnyo/?hl=ko')">@jun.ingnyo</a>
+                        <br>
+                        <a href="#" class="btn btn-dark"
+                            onClick="window.open('https://www.instagram.com/jun0.0lee/?hl=ko')">@jun0.0lee</a>
+                        <br>
+
+                        <!-- Button to Open the Modal -->
+                        <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#mypet">
+                            <i class="far fa-question-circle"></i>Quiz<i class="far fa-question-circle"></i>
+                        </button>
+                        <!-- The Modal -->
+                        <div class="modal fade" id="mypet">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+
+                                    <!-- Modal Header -->
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">다음중 내가 키운 애완동물이 아닌것은?</h4>
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    </div>
+
+                                    <!-- Modal body -->
+                                    <div class="modal-body">
+                                        <form>
+                                            <div class="form-check-inline">
+                                                <label class="form-check-label" for="radio1">
+                                                    <input type="radio" class="form-check-input" id="radio1"
+                                                        name="optradio" value="option1">고양이
+                                                </label>
+                                            </div>
+                                            <div class="form-check-inline">
+                                                <label class="form-check-label" for="radio2">
+                                                    <input type="radio" class="form-check-input" id="radio2"
+                                                        name="optradio" value="option2">토끼
+                                                </label>
+                                            </div>
+                                            <div class="form-check-inline">
+                                                <label class="form-check-label" for="radio3">
+                                                    <input type="radio" class="form-check-input" id="radio3"
+                                                        name="optradio" value="option3">거북이
+                                                </label>
+                                            </div>
+                                            <div class="form-check-inline">
+                                                <label class="form-check-label" for="radio4">
+                                                    <input type="radio" class="form-check-input" id="radio4"
+                                                        name="optradio" value="option4">강아지
+                                                </label>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer"></div>
+                                    <button type="submit" class="btn btn-primary" onclick="myFucntion()">Submit</button>
+                                    <script>
+                                        function myFucntion() {
+
+                                            var checkMySub = document.getElementsByName("optradio");
+                                            if (checkMySub[0].checked == true) {
+                                                alert("정답입니다!!");
+                                            } else {
+                                                alert("오답입니다!!");
+                                            }
+                                        }
+                                    </script>
+                                </div>
+
+
+                                <!-- Modal footer -->
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end modal -->
+
+                </div>
+            </div>
+
+
+            <!-- col-sm-my propert -->
+            <div class="col-sm-8">
+                <!-- Media top -->
+                <div class="media">
+                    <img src="민지가그려준나.png" class="align-self-smart mr-2" style="width:250px">
+                    <div class="panel-group">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" href="#collapse1" style="color: black;"><br><br>Lee
+                                        Jun Young<h6>[이준영]</h6>
+                                    </a>
+                                </h4>
+                            </div>
+                            <br>
+                            <div id="collapse1" class="panel-collapse collapse">
+                                <div class="panel-body">출생<span style="color: black;">
+                                        <i class="fas fa-baby"></i></span>&nbsp;&nbsp;1993.05.21
+                                </div>
+                                <div class="panel-footer">학력<span style="color: black;">
+                                        <i class="fas fa-user-graduate"></i></span>&nbsp;&nbsp;강남대학교
+                                    전자공학과
+                                </div>
+                                <div class="panel-footer">Now<span style="color: black;">
+                                        <i class="fas fa-user-tie"></i></span>&nbsp;&nbsp;스마트팩토리 교육생
+                                </div>
+                                <div class="panel-footer">취미<span style="color: black;">
+                                        <i class="fab fa-instagram"></i></span>&nbsp;&nbsp;그림, 포토샵&일러스트, 당구
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- slide show -->
+                <div id="demo" class="carousel slide" data-ride="carousel">
+                    <ul class="carousel-indicators">
+                        <li data-target="#demo" data-slide-to="0" class="active"></li>
+                        <li data-target="#demo" data-slide-to="1"></li>
+                        <li data-target="#demo" data-slide-to="2"></li>
+                    </ul>
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img src="자전거11.png" alt="Los Angeles" width="1100" height="500">
+                            <div class="carousel-caption">
+                                <h3 style="color: black;">CATIA PIXIEBICYCLE</h3>
+                                <p style="color: black;">JUST RUN IT!</p>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <img src="카티아.png" alt="Chicago" width="1100" height="500">
+                            <div class="carousel-caption" style="color: black;">
+                                <h3>MY GLASSES</h3>
+                                <p>Look At Me!</p>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <img src="대지 15.png" alt="New York" width="1100" height="500">
+                            <div class="carousel-caption" style="color: black;">
+                                <h3>DLEMIA FACTORY</h3>
+                                <p>Smart Factory!</p>
+                            </div>
+                        </div>
+                    </div>
+                    <a class="carousel-control-prev" href="#demo" data-slide="prev">
+                        <span class="carousel-control-prev-icon"></span>
+                    </a>
+                    <a class="carousel-control-next" href="#demo" data-slide="next">
+                        <span class="carousel-control-next-icon"></span>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $('[data-toggle="popover"]').popover();
+        });
+    </script>
+
+
+</body>
+
+</html>
