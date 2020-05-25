@@ -5,9 +5,7 @@ module.exports.item = function(navBar, menuLink, itemObj) {
     let items = '';
     for (item of itemObj) {
         items += `
-        <div class="col-6"><img src="/images/${item.itemName}.jpg" width="280" height="280"  class="rounded" alt="Cinque Terre"><br><label class="form-check-label">
-        <input type="checkbox" class="form-check-input" value="">
-      </label><br>${item.iid}. ${item.itemName}<br>SKU : ${item.itemNum}</div>
+        <div class="col-6"><img src="/images/${item.itemName}.jpg" width="280" height="280"  class="rounded" alt="Cinque Terre"><br>${item.iid}. ${item.itemName}<br>SKU : ${item.itemNum}</div>
             `;
     }
     return `

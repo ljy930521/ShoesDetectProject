@@ -1,4 +1,9 @@
 module.exports = {
+    DUMMY: 0,
+    ITEM_MENU: 1,
+    CONVEYOR_MENU:2,
+    USER_MENU:3,
+    GALLERY_MENU:4,
     navBar: function(isHome, weather, userName) {
         let homeLink = isHome ? `<a class="nav-link active" href="#">Home</a>`: `<a class="nav-link" href="/home">Home</a>`;
         return `
@@ -23,21 +28,21 @@ module.exports = {
         `;
     },
     menuLink: function(menu) {
-        let itemLink = `<a class="nav-link" href="/item">Shoes List</a>`;
+        let itemLink = `<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">`;
         let conveyorLink = `<a class="nav-link" href="/conveyor">Conveyor</a>`;
         let userLink = `<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">`;
         let galleryLink = `<a class="nav-link" href="/gallery">갤러리</a>`;
         switch(menu) {
-            case 1:     // Sensor 메뉴를 눌렀을 경우
-                itemLink = `<a class="nav-link active" href="#">Shoes List</a>`;
+            case this.ITEM_MENU:     // item 메뉴를 눌렀을 경우
+                itemLink = `<a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">`;
                 break;
-            case 2:     // Conveyor 메뉴를 눌렀을 경우
+            case this.CONVEYOR_MENU:     // Conveyor 메뉴를 눌렀을 경우
                 conveyorLink = `<a class="nav-link active" href="#">Conveyor</a>`;
                 break;
-            case 3:     // User 메뉴를 눌렀을 경우
+            case this.USER_MENU:     // User 메뉴를 눌렀을 경우
                 userLink = `<a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">`;
                 break;
-            case 4:     // Gallery 메뉴를 눌렸을 경우
+            case this.GALLERY_MENU:     // Gallery 메뉴를 눌렸을 경우
                 galleryLink = `<a class="nav-link active" href="#">갤러리</a>`;
                 break;
             default:
@@ -45,8 +50,15 @@ module.exports = {
         }
         return `
             <ul class="nav nav-pills flex-column">
-                <li class="nav-item">
+                <li class="nav-item dropdown">
                     ${itemLink}
+                    Shoes List
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="/item/register">등록(C)</a>
+                        <!-- 페이지를 지원하기 위해 /item/list/page/1 으로 변경 -->
+                        <a class="dropdown-item" href="/item/list/page/1">조회(R)</a>
+                    </div>
                 </li>
                 <li class="nav-item">
                     ${conveyorLink}
