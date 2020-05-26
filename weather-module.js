@@ -1,5 +1,5 @@
 const request = require('request');
-const template = require('./view/template');
+const template = require('./view/common/template');
 const fs = require('fs');
 const apiURI = 'http://api.openweathermap.org/data/2.5/weather?q=Yongin,kr&units=metric&appid=';
 // Open Weather(https://openweathermap.org/) 에 접속해서 본인의 API Key를 받은 후 본인 것을 사용하세요.

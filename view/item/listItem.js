@@ -1,15 +1,20 @@
-const template = require('./template');
+const template = require('../common/template');
 const header = template.header();
 
-module.exports.listUser = function(navBar, menuLink, userObj, totalPage, pageNo) {
-    let users = '';
-    for (user of userObj) {
-        users += `
+module.exports.listItem = function(navBar, menuLink, itemObj, totalPage, pageNo) {
+    let items = '';
+    
+    for (item of itemObj) {
+        items += `
             <tr>
-                <td>${user.uid}</td><td>${user.name}</td>
-                <td>${user.deptName}</td><td>${user.tel}</td><td>${user.ts}</td>
-                <td><a href="/user/update/uid/${user.uid}"><i class="fas fa-edit"></i></a>&nbsp;&nbsp;
-                    <a href="/user/delete/uid/${user.uid}"><i class="fas fa-trash-alt"></i></td>
+                <td class="align-middle">${item.iid}</td>
+                <td class="align-middle">
+                    <img src="/images/${item.itemName}.jpg" width="70" height="70"  class="rounded" alt="Cinque Terre"></td>
+                <td class="align-middle">${item.itemName}</td>
+                <td class="align-middle">${item.itemNum}</td>
+                <td class="align-middle"><a href="/item/update/iid/${item.iid}"><i class="fas fa-edit"></i></a></td>
+                <td class="align-middle">
+                    <a href="/item/delete/iid/${item.iid}"><i class="fas fa-trash-alt"></i></td>
             </tr>`;
     }
     // 페이지 지원
@@ -25,7 +30,7 @@ module.exports.listUser = function(navBar, menuLink, userObj, totalPage, pageNo)
                         </span>
                     </li>`;
         else
-            pages += `<li class="page-item"><a class="page-link" href="/user/list/page/${page}">${page}</a></li>`;
+            pages += `<li class="page-item"><a class="page-link" href="/item/list/page/${page}">${page}</a></li>`;
     }
     pages += `<li class="page-item">
                 <a class="page-link" href="#" aria-label="Next">
@@ -41,32 +46,31 @@ module.exports.listUser = function(navBar, menuLink, userObj, totalPage, pageNo)
 <body>
     <div class="container">
         ${navBar}
-        <div class="row" style="margin-top: 30px">
+        <div class="row" style="text-align: center;">
             <div class="col-2">
                 ${menuLink}
             </div>
             <div class="col-10">
                 <div class="row" style="margin-left: 10px">
-                    <div class="col-12"><h3>사용자 조회</h3></div>
+                    <div class="col-12"><h3>상품 조회</h3></div>
                     <div class="col-12"><hr></div>
-                    <div class="col-11">
+                    <div class="col-12">
                         <table class="table table-condensed table-hover">
                             <thead class="thead-light">
                                 <tr class="active">
-                                    <th scope="col">아이디</th><th scope="col">이름</th>
-                                    <th scope="col">부서</th><th scope="col">전화번호</th>
-                                    <th scope="col">등록일자</th><th scope="col">Action</th>
+                                    <th scope="col">No</th><th scope="col">Image</th>
+                                    <th scope="col">Name</th><th scope="col">Number</th>
+                                    <th scope="col">Update</th><th scope="col">Delete</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                ${users}
+                                ${items}
                             </tbody>
                         </table>
                         <ul class="pagination justify-content-center">
                             ${pages}
                         </ul>
                     </div>
-                    <div class="col-1"></div>
                 </div>
             </div>
         </div>

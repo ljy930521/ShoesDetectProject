@@ -1,4 +1,4 @@
-const template = require('./template');
+const template = require('../common/template');
 const header = template.header();
 
 module.exports.updateUser = function(navBar, menuLink, depts, user) {
@@ -67,7 +67,7 @@ module.exports.updateUser = function(navBar, menuLink, depts, user) {
                                 <tr>
                                     <td colspan="2" style="text-align: center;">
                                         <button type="submit" class="btn btn-primary">수정</button>&nbsp;&nbsp;
-                                        <button type="reset"" class="btn btn-secondary">취소</button>
+                                        <button type="reset"" class="btn btn-secondary" onclick="location.href='/user/list/page/1'">취소</button>
                                     </td>
                                 </tr>
                             </table>

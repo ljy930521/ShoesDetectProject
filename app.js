@@ -3,8 +3,8 @@ const bodyParser = require('body-parser');
 const favicon = require('express-favicon');
 const session = require('express-session');
 const FileStore = require('session-file-store')(session);
-const alert = require('./view/alertMsg');
-const template = require('./view/template');
+const alert = require('./view/common/alertMsg');
+const template = require('./view/common/template');
 const wm = require('./weather-module');
 const dbModule = require('./db-module');
 const sm = require('./serial-module');
@@ -43,7 +43,7 @@ app.get('/home', function (req, res) {
         wm.getWeather(function (weather) {
             let navBar = template.navBar(true, weather, req.session.userName);
             let menuLink = template.menuLink(template.DUMMY);
-            let view = require('./view/home');
+            let view = require('./view/common/home');
             let html = view.home(navBar, menuLink);
             // let html = view.home(navBar, menuLink, sensor, actuator);
             res.send(html);
@@ -53,29 +53,6 @@ app.get('/home', function (req, res) {
     }
 });
 app.use('/item', itemRouter);
-// app.get('/item', function (req, res) {
-//     if (req.session.userId === undefined) {
-//         let html = alert.alertMsg('시스템을 사용하려면 먼저 로그인하세요.', '/');
-//         res.send(html);
-//     } else {
-//         let uid = req.session.userId;
-//         // item
-//         try {
-//             dbModule.getAllItems(function (item) {
-//                 wm.getWeather(function (weather) {
-//                     let navBar = template.navBar(false, weather, req.session.userName);
-//                     let menuLink = template.menuLink(template.ITEM_MENU);
-//                     let view = require('./view/item');
-//                     let html = view.item(navBar, menuLink, item);
-//                     res.send(html);
-//                 });
-//             });
-
-//         } catch (exception) {
-//             console.log(exception);
-//         }
-//     }
-// });
 app.get('/conveyor', function (req, res) {
     if (req.session.userId === undefined) {
         let html = alert.alertMsg('시스템을 사용하려면 먼저 로그인하세요.', '/');
@@ -84,12 +61,11 @@ app.get('/conveyor', function (req, res) {
         let uid = req.session.userId;
         // item
         try {
-            dbModule.getAllItems(function (conveyor) {
-            
+            dbModule.getConItems(function (conveyor) {
                 wm.getWeather(function (weather) {
                     let navBar = template.navBar(false, weather, req.session.userName);
                     let menuLink = template.menuLink(template.CONVEYOR_MENU);
-                    let view = require('./view/conveyor');
+                    let view = require('./view/conveyor/conveyor');
                     let html = view.conveyor(navBar, menuLink, conveyor);
                     res.send(html);
                 });
@@ -187,7 +163,7 @@ app.get('/gallery', function (req, res) {
         let html = alert.alertMsg('시스템을 사용하려면 먼저 로그인하세요.', '/');
         res.send(html);
     } else {
-        let view = require('./view/gallery');
+        let view = require('./view/common/gallery');
         wm.getWeather(function (weather) {
             let navBar = template.navBar(false, weather, req.session.userName);
             let menuLink = template.menuLink(template.GALLERY_MENU);
@@ -203,7 +179,7 @@ app.get('/weather', function (req, res) {
         let html = alert.alertMsg('시스템을 사용하려면 먼저 로그인하세요.', '/');
         res.send(html);
     } else {
-        let view = require('./view/weather');
+        let view = require('./view/common/weather');
         wm.getWeather(function (weather) {
             let navBar = template.navBar(false, weather, req.session.userName);
             let menuLink = template.menuLink(template.DUMMY);

@@ -1,4 +1,4 @@
-const template = require('./template');
+const template = require('../common/template');
 const header = template.header();
 
 module.exports.deleteUser = function(navBar, menuLink, uid) {

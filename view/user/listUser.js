@@ -1,4 +1,4 @@
-const template = require('./template');
+const template = require('../common/template');
 const header = template.header();
 
 module.exports.listUser = function(navBar, menuLink, userObj, totalPage, pageNo) {

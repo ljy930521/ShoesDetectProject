@@ -1,7 +1,7 @@
 const express = require('express');
 const dbModule = require('./db-module');
-const alert = require('./view/alertMsg');
-const template = require('./view/template');
+const alert = require('./view/common/alertMsg');
+const template = require('./view/common/template');
 const wm = require('./weather-module');
 
 const router = express.Router();
@@ -17,7 +17,7 @@ router.get('/list/page/:page', function(req, res) {        // 로그인만 하�
             dbModule.getUsers(pageNo, function(users) {
                 dbModule.getUserCount(function(result) {        // 페이지 지원
                     let totalPage = Math.ceil(result[0].count / 10);
-                    let view = require('./view/listUser');
+                    let view = require('./view/user/listUser');
                     let html = view.listUser(navBar, menuLink, users, totalPage, pageNo);
                     //console.log(rows);
                     res.send(html);
@@ -38,7 +38,7 @@ router.get('/register', function(req, res) {    // 관리자로 로그인해야 
             let navBar = template.navBar(false, weather, req.session.userName);
             let menuLink = template.menuLink(template.USER_MENU);
             dbModule.getAllDepts(function(rows) {
-                let view = require('./view/registerUser');
+                let view = require('./view/user/registerUser');
                 let html = view.registerUser(navBar, menuLink, rows);
                 //console.log(rows);
                 res.send(html);
@@ -94,7 +94,7 @@ router.get('/update/uid/:uid', function(req, res) {     // 본인 것만 수정�
             dbModule.getAllDepts(function(depts) {
                 dbModule.getUserInfo(uid, function(user) {
                     //console.log(user[0]);
-                    let view = require('./view/updateUser');
+                    let view = require('./view/user/updateUser');
                     let html = view.updateUser(navBar, menuLink, depts, user[0]);
                     res.send(html);
                 });
@@ -153,7 +153,7 @@ router.get('/delete/uid/:uid', function(req, res) {     // 관리자로 로그�
             wm.getWeather(function(weather) {
                 let navBar = template.navBar(false, weather, req.session.userName);
                 let menuLink = template.menuLink(template.USER_MENU);
-                let view = require('./view/deleteUser');
+                let view = require('./view/user/deleteUser');
                 let html = view.deleteUser(navBar, menuLink, uid);  
                 res.send(html);
             });

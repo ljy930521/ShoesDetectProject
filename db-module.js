@@ -21,7 +21,7 @@ module.exports = {
         });
         return connection;
     },
-    getUserInfo:    function(uid, callback) {
+    getUserInfo:    function(uid, callback) { // 로그인 하기위해
         const conn = this.getConnection();
         const sql = 'select * from user where uid = ?';   // DATE_FORMAT(createdDate, '%Y-%m-%d %T')
 
@@ -121,9 +121,9 @@ module.exports = {
         });
         conn.end();
     },
-    getAllItems: function(callback) {
+    getConItems: function(callback){
         const conn = this.getConnection();
-        const sql = `SELECT i.iid, i.itemNum, i.itemName, i.itemAmount FROM item AS i`;
+        const sql = `SELECT i.iid, i.itemNum, i.itemName, i.itemImg FROM item AS i`;
         
         conn.query(sql, function(err, rows, fields) {
             if (err)
@@ -133,7 +133,104 @@ module.exports = {
         });
         conn.end();
     },
+    getAllItems: function(pageNo, callback) {
+        const conn = this.getConnection();
+        let offset = (pageNo - 1) * 10;
+        const sql = `SELECT i.iid, i.itemNum, i.itemName FROM item AS i WHERE i.isDeleted=0 limit ${offset}, 10`;
+        
+        conn.query(sql, function(err, rows, fields) {
+            if (err)
+                console.log(err);
+            else
+                callback(rows);
+        });
+        conn.end();
+    },    
+    getItemInfo:    function(iid, callback) { // 아이템 넘버비교
+        const conn = this.getConnection();
+        const sql = 'select * from item where iid = ?';   // DATE_FORMAT(createdDate, '%Y-%m-%d %T')
 
+        conn.query(sql, iid, function(err, row, fields) {
+            if (err)
+                console.log(err);
+            else
+                callback(row);
+        });
+        conn.end();
+    },
+    getItemNumInfo:    function(itemNum, callback) { // 아이템 넘버비교
+        const conn = this.getConnection();
+        const sql = 'select * from item where itemNum = ?';   // DATE_FORMAT(createdDate, '%Y-%m-%d %T')
+
+        conn.query(sql, itemNum, function(err, row, fields) {
+            if (err)
+                console.log(err);
+            else
+                callback(row);
+        });
+        conn.end();
+    },
+    getItemCount:  function(callback) {
+        const conn = this.getConnection();
+        const sql = `select count(*) as \`count\` from item where isDeleted=0`;
+
+        conn.query(sql, function(err, row, fields) {
+            if (err)
+                console.log(err);
+            else
+                callback(row);
+        });
+        conn.end();
+    },
+    registerItem:    function(params, callback) {
+        const conn = this.getConnection();
+        const sql = `insert into item(itemNum, itemName, itemImg) values (?, ?, ?)`;
+
+        conn.query(sql, params, function(err, result) {
+            if (err)
+                console.log(err);
+            else {
+                callback();
+            }
+        });
+        conn.end();
+    },
+    updateItem: function(params, callback) {
+        const conn = this.getConnection();
+        const sql = `update item set itemNum=?, itemName=?, itemImg=? where iid = ?`;
+
+        conn.query(sql, params, function(err, result) {
+            if (err)
+                console.log(err);
+            else
+                callback();
+        });
+        conn.end();
+    },
+    deleteItem: function(iid, callback) {
+        const conn = this.getConnection();
+        const sql = `update item set isDeleted=1 where iid = ?`;
+
+        conn.query(sql, iid, function(err, result) {
+            if (err)
+                console.log(err);
+            else
+                callback();
+        });
+        conn.end();
+    },
+    deleteItemRearrange: function(iid, callback) {
+        const conn = this.getConnection();
+        const sql = `ALTER TABLE item AUTO_INCREMENT=1 set @COUNT=0 UPDATE item SET item.iid = @COUNT:=@COUNT+1`;
+
+        conn.query(sql, iid, function(err, result) {
+            if (err)
+                console.log(err);
+            else
+                callback();
+        });
+        conn.end();
+    },
     getTanks:  function(group, callback) {
         const conn = this.getConnection();
         let offset = (group - 1) * 10;

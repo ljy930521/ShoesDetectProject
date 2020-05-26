@@ -1,13 +1,10 @@
-const template = require('./template');
+const template = require('../common/template');
 const header = template.header();
 
-module.exports.updateUser = function(navBar, menuLink, depts, user) {
+module.exports.registerUser = function(navBar, menuLink, deptObj) {
     let options = '';
-    for (dept of depts) {
-        if (dept.did === user.deptId)
-            options += `<option value="${dept.did}" selected>${dept.name}</option>`;
-        else
-            options += `<option value="${dept.did}">${dept.name}</option>`;
+    for (deptItem of deptObj) {
+        options += `<option value="${deptItem.did}">${deptItem.name}</option>`;
     }
     return `
 <!DOCTYPE html>
@@ -24,33 +21,27 @@ module.exports.updateUser = function(navBar, menuLink, depts, user) {
             </div>
             <div class="col-10">
                 <div class="row" style="margin-left: 10px">
-                    <div class="col-12"><h3>사용자 수정</h3></div>
+                    <div class="col-12"><h3>사용자 등록</h3></div>
                     <div class="col-12"><hr></div>
                     <div class="col-2"></div>
                     <div class="col-7">
-                        <form action="/user/update" method="POST">
-                            <input type="hidden" name="uid" value="${user.uid}">
+                        <form action="/user/register" method="POST">
                             <table class="table table-borderless">
                                 <tr>
                                     <td>아이디</td>
-                                    <td>${user.uid}</td>
+                                    <td><input type="text" class="form-control" id="uid" name="uid"></td>
                                 </tr>
                                 <tr>
-                                    <td>현재 패스워드</td>
-                                    <td><input type="password" class="form-control" name="oldPswd">
-                                        <input type="checkbox" value="1" name="changePswd"> 패스워드 변경시 체크</td>
+                                    <td><span style="color:blue"></span>패스워드</td>
+                                    <td><input type="password" class="form-control" id="pswd" name="pswd"></td>
                                 </tr>
                                 <tr>
-                                    <td>신규 패스워드</td>
-                                    <td><input type="password" class="form-control" name="pswd"></td>
-                                </tr>
-                                <tr>
-                                    <td>신규 패스워드 확인</td>
-                                    <td><input type="password" class="form-control" name="pswd2"></td>
+                                    <td><span style="color:blue"></span>패스워드 확인</td>
+                                    <td><input type="password" class="form-control" id="pswd2" name="pswd2"></td>
                                 </tr>
                                 <tr>
                                     <td>이름</td>
-                                    <td><input type="text" class="form-control" name="name" value="${user.name}"></td>
+                                    <td><input type="text" class="form-control" id="name" name="name"></td>
                                 </tr>
                                 <tr>
                                     <td>부서명</td>
@@ -62,12 +53,13 @@ module.exports.updateUser = function(navBar, menuLink, depts, user) {
                                 </tr>
                                 <tr>
                                     <td>전화번호</td>
-                                    <td><input type="text" class="form-control" name="tel" value="${user.tel}"></td>
+                                    <td><input type="text" class="form-control" id="tel" name="tel"></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2" style="text-align: center;">
-                                        <button type="submit" class="btn btn-primary">수정</button>&nbsp;&nbsp;
-                                        <button type="reset"" class="btn btn-secondary">취소</button>
+                                        <button type="submit" class="btn btn-primary">등록</button>&nbsp;&nbsp;
+                                        <button type="reset" class="btn btn-secondary" onclick="location.href='/user/list/page/1'">취소</button>
+                                        
                                     </td>
                                 </tr>
                             </table>
@@ -82,4 +74,3 @@ module.exports.updateUser = function(navBar, menuLink, depts, user) {
 </html>
     `;
 }
-//<img src="greenlogo.png" class="d-inline-block align-top" alt="">&nbsp;&nbsp;&nbsp;
