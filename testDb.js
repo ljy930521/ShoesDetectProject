@@ -8,7 +8,7 @@ const dm = require('./db-module.js');
 // }); 
 // dm.getUserInfo('kim', user => {
 //     console.log(user[0]);
-dm.getAllItems(1, user => {
+dm.getUsers(1, user => {
     console.log(user[0]);
 });
 // let params = ['4', '1234', '김영업'];

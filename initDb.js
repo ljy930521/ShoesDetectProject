@@ -58,7 +58,10 @@ const insertDeptSql = "INSERT INTO dept VALUES(?, ?)";
 const insertUserSql = `INSERT INTO user(uid, password, name, deptId, tel) VALUES('admin', '1234', '관리자', 101, '010-2345-6789')`;
 const insertTankSql = `INSERT INTO tank VALUES (?, ?, ?, ?, ?, ?)`;
 const insertTankSetupSql = `INSERT INTO tankSetup(tsPerson, tsTank) VALUES(?, ?)`;
-
+const insertExamineSql = `INSERT INTO examine(eid, e_uid, e_itemName, eSmr, eDeg, eDefRate, eImg) VALUES(?, ?, ?, ?, ?, ?, ?)`;
+const examData = [
+    [1, '관리자','SACAI', 90, '상', 100, 'good.jpg']
+];
 const deptData = [
     [101, '경영지원팀'],
     [102, '영업팀'],
@@ -78,14 +81,14 @@ const tankData = [
     [10, 0, ' ', 0.0, 0.0, 0.0]
 ];
 
-/* dm.executeQuery(createDeptSql, function() {
-    console.log("Dept Table is created");
-    for (let dept of deptData) {
-        dm.executeQueryWithParams(insertDeptSql, dept, function() {
-            console.log("dept record inserted");
+// dm.executeQuery(createDeptSql, function() {
+    // console.log("Dept Table is created");
+    for (let dept of examData) {
+        dm.executeQueryWithParams(insertExamineSql, dept, function() {
+            console.log("record inserted");
         });
     }
-});*/
+// });
 
 /* dm.executeQuery(createUserSql, function() {
     console.log("User Table is created");
@@ -131,24 +134,24 @@ dm.executeQuery(createTankSetupSql, function() {
 });
 */
 
-let senseData = [];
-for (let i=0; i<15; i++) {
-    for (let k=1; k<=10; k++) {
-        let record = [];
-        record.push(k);
-        record.push(Math.random().toFixed(1)*3.0 + 28.0);
-        record.push(Math.random().toFixed(1)*2.0 + 4.5);
-        let hour = (i < 10) ? `0${i}` : `${i}`;
-        record.push(`2020-05-15 ${hour}:00:00`);
-        senseData.push(record);
-    }
-}
-const insertSenseTableSql = `INSERT INTO senseTable(stank, stemp, sph, stime) VALUES (?, ?, ?, ?)`;
-dm.executeQuery(createSenseTableSql, function() {
-    console.log("Sense Table is created");
-    for (let item of senseData) {
-        dm.executeQueryWithParams(insertSenseTableSql, item, function() {
-            process.stdout.write("+ ");
-        });
-    }
-});
+// let senseData = [];
+// for (let i=0; i<15; i++) {
+//     for (let k=1; k<=10; k++) {
+//         let record = [];
+//         record.push(k);
+//         record.push(Math.random().toFixed(1)*3.0 + 28.0);
+//         record.push(Math.random().toFixed(1)*2.0 + 4.5);
+//         let hour = (i < 10) ? `0${i}` : `${i}`;
+//         record.push(`2020-05-15 ${hour}:00:00`);
+//         senseData.push(record);
+//     }
+// }
+// const insertSenseTableSql = `INSERT INTO senseTable(stank, stemp, sph, stime) VALUES (?, ?, ?, ?)`;
+// dm.executeQuery(createSenseTableSql, function() {
+//     console.log("Sense Table is created");
+//     for (let item of senseData) {
+//         dm.executeQueryWithParams(insertSenseTableSql, item, function() {
+//             process.stdout.write("+ ");
+//         });
+//     }
+// });

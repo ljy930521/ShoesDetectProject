@@ -8,6 +8,7 @@ const template = require('./view/common/template');
 const wm = require('./weather-module');
 const dbModule = require('./db-module');
 const sm = require('./serial-module');
+const ps = require('./python-shell');
 
 const app = express();
 app.use(bodyParser.urlencoded({
@@ -60,22 +61,84 @@ app.get('/conveyor', function (req, res) {
     } else {
         let uid = req.session.userId;
         // item
-        try {
-            dbModule.getConItems(function (conveyor) {
+        dbModule.getConItems(function (conItem) {
+            dbModule.getAllExams(function(examTable){
                 wm.getWeather(function (weather) {
                     let navBar = template.navBar(false, weather, req.session.userName);
                     let menuLink = template.menuLink(template.CONVEYOR_MENU);
                     let view = require('./view/conveyor/conveyor');
-                    let html = view.conveyor(navBar, menuLink, conveyor);
+                    let html = view.conveyor(navBar, menuLink, conItem, examTable);
                     res.send(html);
                 });
             });
-
-        } catch (exception) {
-            console.log(exception);
-        }
+        });
     }
 });
+app.post('/conveyor', function(req, res) {
+    let conStart = parseInt(req.body.start);
+    let conPause = parseInt(req.body.pause);
+    let eItemName = req.body.itemChoose;
+    let eUid = req.session.userId;
+
+    ps.pythonRun(function(exam){//python start!
+        let eSmr = exam[0];
+        let eDeg = exam[1];
+        let eImg = exam[1]+'.jpg';
+        dbModule.getExamCount(eItemName, function(count){
+            dbModule.getBadExamCount(eItemName, function(bads)
+            {
+                if(eDeg == 'bad')
+                {
+                    let eDefRate = (bads[0].count+1)/(count[0].count+1)*100;
+                    let params = [eUid, eItemName, eSmr, eDeg, eDefRate, eImg];
+                    dbModule.registerExam(params, function(){//Insert into examine 
+                        res.redirect(`/conveyor`);
+                    });
+                }
+                else
+                {
+                    let eDefRate = bads[0].count/(count[0].count+1)*100;
+                    let params = [eUid, eItemName, eSmr, eDeg, eDefRate, eImg];
+                    dbModule.registerExam(params, function(){
+                        res.redirect(`/conveyor`);
+                    });
+                }
+            });
+        });
+    });
+
+
+});
+// app.post('/conveyor', function(req, res) {
+//         let conveyor = parseInt(req.body.relay);
+//         let reason = req.body.reason;
+//         if (reason === '기타') {
+//             let detail = req.body.detail;
+//             reason += ` - ${detail}`;
+//         }
+//         let uid = req.session.userId;
+    
+//         let actuator = new Object();
+//         actuator.red = red;
+//         actuator.green = green;
+//         actuator.blue = blue;
+//         actuator.relay = relay;
+//         let jsonData = JSON.stringify(actuator);
+    
+//         // DB에 삽입
+//         dbModule.insertActuator(red, green, blue, relay, reason, uid, function() {
+//             // 액츄에이터 구동
+//             sm.writeActuator(jsonData, function() {
+//                 // home 화면으로 보내기
+//                 try {
+//                     res.redirect('/home');
+//                 } catch (ex) {
+//                     console.log(ex);
+//                 }  
+//             });
+    
+//         });
+//     });
 // app.get('/sensor', function(req, res) {
 //     if (req.session.userId === undefined) {
 //         let html = alert.alertMsg('시스템을 사용하려면 먼저 로그인하세요.', '/');

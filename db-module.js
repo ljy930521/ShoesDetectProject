@@ -231,6 +231,55 @@ module.exports = {
         });
         conn.end();
     },
+    getAllExams: function(callback) {
+        const conn = this.getConnection();
+        const sql = `SELECT e.eid, e.e_uid, e.e_itemName, e.eTime, e.eSmr, e.eDeg, e.eDefRate FROM examine AS e`;
+        
+        conn.query(sql, function(err, rows, fields) {
+            if (err)
+                console.log(err);
+            else
+                callback(rows);
+        });
+        conn.end();
+    },    
+    registerExam:    function(params, callback) {
+        const conn = this.getConnection();
+        const sql = `INSERT INTO examine(e_uid, e_itemName, eSmr, eDeg, eDefRate, eImg) VALUES(?, ?, ?, ?, ?, ?)`;
+
+        conn.query(sql, params, function(err, result) {
+            if (err)
+                console.log(err);
+            else {
+                callback();
+            }
+        });
+        conn.end();
+    },
+    getExamCount:  function(eItemName, callback) {
+        const conn = this.getConnection();
+        const sql = `select count(*) as \`count\` from examine where e_itemName = ?`;
+
+        conn.query(sql, eItemName, function(err, row, fields) {
+            if (err)
+                console.log(err);
+            else
+                callback(row);
+        });
+        conn.end();
+    },
+    getBadExamCount:  function(eItemName, callback) {
+        const conn = this.getConnection();
+        const sql = `select count(*) as \`count\` from examine where e_itemName = ? and eDeg = 'bad'`;
+
+        conn.query(sql, eItemName, function(err, row, fields) {
+            if (err)
+                console.log(err);
+            else
+                callback(row);
+        });
+        conn.end();
+    },
     getTanks:  function(group, callback) {
         const conn = this.getConnection();
         let offset = (group - 1) * 10;
