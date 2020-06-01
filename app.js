@@ -98,6 +98,7 @@ app.post('/conveyor', function (req, res) {
     let actuator = new Object();
     actuator.start = conStart;
     let jsonData = JSON.stringify(actuator);
+    
 
     if (eItemName !== undefined && conStart == 1) //시작버튼 누를때 시작
     {
@@ -110,35 +111,51 @@ app.post('/conveyor', function (req, res) {
                 } catch (ex) {
                     console.log(ex);
                 }
-            }, 10000);
+            }, 15000);
         });
     } else if (end == 1) {//컨베이어 1 작동 후
-        // ps.pythonRun(function(exam){//python start!
-        //     let eSmr = exam[0];
-        //     let eDeg = exam[1];
-        //     let eImg = exam[1]+'.jpg';
-        //     dbModule.getExamCount(eItemName, function(count){
-        //         dbModule.getBadExamCount(eItemName, function(bads)
-        //         {
-        //             if(eDeg == 'bad')
-        //             {
-        //                 let eDefRate = (bads[0].count+1)/(count[0].count+1)*100;
-        //                 let params = [eUid, eItemName, eSmr, eDeg, eDefRate, eImg];
-        //                 dbModule.registerExam(params, function(){//Insert into examine 
-        //                     res.redirect(`/conveyor`);
-        //                 });
-        //             }
-        //             else
-        //             {
-        //                 let eDefRate = bads[0].count/(count[0].count+1)*100;
-        //                 let params = [eUid, eItemName, eSmr, eDeg, eDefRate, eImg];
-        //                 dbModule.registerExam(params, function(){
-        //                     res.redirect(`/conveyor`);
-        //                 });
-        //             }
-        //         });
-        //     });
-        // });
+        ps.pythonRun(function(exam){//python start!
+            let eSmr = exam[0];
+            let eDeg = exam[1];
+            let eImg = exam[1]+'.jpg';
+            dbModule.getExamCount(eItemName, function(count){
+                dbModule.getBadExamCount(eItemName, function(bads)
+                {
+                    if(eDeg == 'bad')
+                    {
+                        let eDefRate = (bads[0].count+1)/(count[0].count+1)*100;
+                        let params = [eUid, eItemName, eSmr, eDeg, eDefRate, eImg];
+                        dbModule.registerExam(params, function(){//Insert into examine 
+                            actuator.start = 2; // bad서보모터 구동
+                            let jsonData2 = JSON.stringify(actuator);
+                            sm.writeActuator(jsonData2, function(){
+                                try{
+                                    res.redirect(`/conveyor`);
+                                }catch(ex2) {
+                                    console.log(ex2);
+                                }
+                            })
+                        });
+                    }
+                    else
+                    {
+                        let eDefRate = bads[0].count/(count[0].count+1)*100;
+                        let params = [eUid, eItemName, eSmr, eDeg, eDefRate, eImg];
+                        dbModule.registerExam(params, function(){
+                            actuator.start = 3; // bad서보모터 구동
+                            let jsonData3 = JSON.stringify(actuator);
+                            sm.writeActuator(jsonData3, function(){
+                                try{
+                                    res.redirect(`/conveyor`);
+                                }catch(ex3) {
+                                    console.log(ex3);
+                                }
+                            })
+                        });
+                    }
+                });
+            });
+        });
     } else if (conStart == 0) {//중지버튼누를때
         res.redirect(`/conveyor`);
     } else {

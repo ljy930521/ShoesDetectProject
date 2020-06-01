@@ -112,8 +112,8 @@ Select Me!
           <br>
           ${aStep}
           <input type="hidden" name="aStep" value="${step[0].aStep}">
-          <button type="submit" class="btn btn-dark" name="start" value="1">시작</button>
-          <button type="submit" class="btn btn-dark" name="start" value="0">중지</button>
+          <button type="submit" class="btn btn-dark" name="start" value="1">Conveyor</button>
+          <button type="submit" class="btn btn-dark" name="start" value="0">Examine</button>
           
           </div>
           <div class="col-12"><hr></div>
