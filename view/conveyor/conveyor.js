@@ -1,13 +1,15 @@
 const template = require('../common/template');
 const header = template.header();
-module.exports.conveyor = function (navBar, menuLink, itemObj, examTable) {
+module.exports.conveyor = function (navBar, menuLink, itemObj, examTable, step) {
+  let aStep = step[0].aStep;
+
   let exams = '';
   for (exam of examTable) {
       exams += `
         <tr>
-          <td>${examTable.e_uid}</td><td>${examTable.e_itemName}</td>
-          <td>${examTable.eTime}</td><td>${examTable.eSmr}</td><td>${examTable.eDeg}</td>
-          <td>${examTable.eDefRate}</td>
+          <td>${exam.e_uid}</td><td>${exam.e_itemName}</td>
+          <td>${exam.eTime}</td><td>${exam.eSmr}</td><td>${exam.eDeg}</td>
+          <td>${exam.eDefRate}</td>
         </tr>`;
   }
 
@@ -108,9 +110,10 @@ Select Me!
           <div class="col-10">
           <img id="chooseShoes" src="/images/conveyor.png" width="600" height="200"  class="rounded" alt="Cinque Terre">
           <br>
-          
+          ${aStep}
+          <input type="hidden" name="aStep" value="${step[0].aStep}">
           <button type="submit" class="btn btn-dark" name="start" value="1">시작</button>
-          <button type="submit" class="btn btn-dark" name="pause" value="0">중지</button>
+          <button type="submit" class="btn btn-dark" name="start" value="0">중지</button>
           
           </div>
           <div class="col-12"><hr></div>

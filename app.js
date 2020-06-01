@@ -60,85 +60,92 @@ app.get('/conveyor', function (req, res) {
         res.send(html);
     } else {
         let uid = req.session.userId;
-        // item
-        dbModule.getConItems(function (conItem) {
-            dbModule.getAllExams(function(examTable){
-                wm.getWeather(function (weather) {
-                    let navBar = template.navBar(false, weather, req.session.userName);
-                    let menuLink = template.menuLink(template.CONVEYOR_MENU);
-                    let view = require('./view/conveyor/conveyor');
-                    let html = view.conveyor(navBar, menuLink, conItem, examTable);
-                    res.send(html);
-                });
+        try {
+            sm.readSensor(function (result) {
+                let restart = result.end;
+                console.log(restart);
+                dbModule.insertStep(restart, function(){
+                    dbModule.getCurrentStep(function(step){
+                        dbModule.getConItems(function (conItem) {
+                            dbModule.getAllExams(function (examTable) {
+                                wm.getWeather(function (weather) {
+                                    let navBar = template.navBar(false, weather, req.session.userName);
+                                    let menuLink = template.menuLink(template.CONVEYOR_MENU);
+                                    let view = require('./view/conveyor/conveyor');
+                                    let html = view.conveyor(navBar, menuLink, conItem, examTable, step);
+                                    // console.log(step);
+                                    // let s= step[0].aStep;
+                                    // console.log(s);
+                                    res.send(html);
+                                })
+                            });
+                        });
+                    })
+                })
             });
-        });
+        } catch (ex1) {
+            console.log(ex1);
+        }
     }
 });
-app.post('/conveyor', function(req, res) {
-    let conStart = parseInt(req.body.start);
-    let conPause = parseInt(req.body.pause);
+app.post('/conveyor', function (req, res) {
+    let conStart = parseInt(req.body.start); //1
     let eItemName = req.body.itemChoose;
     let eUid = req.session.userId;
+    let end = parseInt(req.body.aStep);
+    console.log("end:",end);
 
-    ps.pythonRun(function(exam){//python start!
-        let eSmr = exam[0];
-        let eDeg = exam[1];
-        let eImg = exam[1]+'.jpg';
-        dbModule.getExamCount(eItemName, function(count){
-            dbModule.getBadExamCount(eItemName, function(bads)
-            {
-                if(eDeg == 'bad')
-                {
-                    let eDefRate = (bads[0].count+1)/(count[0].count+1)*100;
-                    let params = [eUid, eItemName, eSmr, eDeg, eDefRate, eImg];
-                    dbModule.registerExam(params, function(){//Insert into examine 
-                        res.redirect(`/conveyor`);
-                    });
+    let actuator = new Object();
+    actuator.start = conStart;
+    let jsonData = JSON.stringify(actuator);
+
+    if (eItemName !== undefined && conStart == 1) //시작버튼 누를때 시작
+    {
+
+        sm.writeActuator(jsonData, function () {
+            setTimeout(function () {
+
+                try {
+                    res.redirect('/conveyor'); // home 화면으로 보내기
+                } catch (ex) {
+                    console.log(ex);
                 }
-                else
-                {
-                    let eDefRate = bads[0].count/(count[0].count+1)*100;
-                    let params = [eUid, eItemName, eSmr, eDeg, eDefRate, eImg];
-                    dbModule.registerExam(params, function(){
-                        res.redirect(`/conveyor`);
-                    });
-                }
-            });
+            }, 10000);
         });
-    });
-
-
+    } else if (end == 1) {//컨베이어 1 작동 후
+        // ps.pythonRun(function(exam){//python start!
+        //     let eSmr = exam[0];
+        //     let eDeg = exam[1];
+        //     let eImg = exam[1]+'.jpg';
+        //     dbModule.getExamCount(eItemName, function(count){
+        //         dbModule.getBadExamCount(eItemName, function(bads)
+        //         {
+        //             if(eDeg == 'bad')
+        //             {
+        //                 let eDefRate = (bads[0].count+1)/(count[0].count+1)*100;
+        //                 let params = [eUid, eItemName, eSmr, eDeg, eDefRate, eImg];
+        //                 dbModule.registerExam(params, function(){//Insert into examine 
+        //                     res.redirect(`/conveyor`);
+        //                 });
+        //             }
+        //             else
+        //             {
+        //                 let eDefRate = bads[0].count/(count[0].count+1)*100;
+        //                 let params = [eUid, eItemName, eSmr, eDeg, eDefRate, eImg];
+        //                 dbModule.registerExam(params, function(){
+        //                     res.redirect(`/conveyor`);
+        //                 });
+        //             }
+        //         });
+        //     });
+        // });
+    } else if (conStart == 0) {//중지버튼누를때
+        res.redirect(`/conveyor`);
+    } else {
+        let html = alert.alertMsg('검사 할 상품을 선택해주세요.', '/conveyor');
+        res.send(html);
+    }
 });
-// app.post('/conveyor', function(req, res) {
-//         let conveyor = parseInt(req.body.relay);
-//         let reason = req.body.reason;
-//         if (reason === '기타') {
-//             let detail = req.body.detail;
-//             reason += ` - ${detail}`;
-//         }
-//         let uid = req.session.userId;
-    
-//         let actuator = new Object();
-//         actuator.red = red;
-//         actuator.green = green;
-//         actuator.blue = blue;
-//         actuator.relay = relay;
-//         let jsonData = JSON.stringify(actuator);
-    
-//         // DB에 삽입
-//         dbModule.insertActuator(red, green, blue, relay, reason, uid, function() {
-//             // 액츄에이터 구동
-//             sm.writeActuator(jsonData, function() {
-//                 // home 화면으로 보내기
-//                 try {
-//                     res.redirect('/home');
-//                 } catch (ex) {
-//                     console.log(ex);
-//                 }  
-//             });
-    
-//         });
-//     });
 // app.get('/sensor', function(req, res) {
 //     if (req.session.userId === undefined) {
 //         let html = alert.alertMsg('시스템을 사용하려면 먼저 로그인하세요.', '/');
@@ -218,7 +225,6 @@ app.post('/conveyor', function(req, res) {
 //                 console.log(ex);
 //             }  
 //         });
-
 //     });
 // });
 app.get('/gallery', function (req, res) {
@@ -253,6 +259,8 @@ app.get('/weather', function (req, res) {
         });
     }
 });
+
+
 
 app.get('*', function (req, res) {
     res.status(404).send('File not found');

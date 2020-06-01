@@ -280,61 +280,32 @@ module.exports = {
         });
         conn.end();
     },
-    getTanks:  function(group, callback) {
+    insertStep: function(params, callback) {
         const conn = this.getConnection();
-        let offset = (group - 1) * 10;
-        const sql = `select * from tank limit ${offset}, 10`;   // limit offset, 갯수
+        const sql = `INSERT INTO actuator(aStep) VALUES(?)`;
 
-        conn.query(sql, function(err, rows, fields) {
-            if (err)
-                console.log(err);
-            else
-                callback(rows);
-        });
-        conn.end();
-    },
-    getTankSeupData: function(callback) {
-        const conn = this.getConnection();
-        const sql = `select tsId, date_format(tsTime, '%Y-%m-%d %T') as tsTime, tsPerson, tsTank from tankSetup order by tsid desc limit 1`;
-
-        conn.query(sql, function(err, rows, fields) {
-            if (err)
-                console.log(err);
-            else {
-                callback(rows);
-            }
-        });
-        conn.end();
-    },
-    addTankSetupData: function(params, callback) {
-        const conn = this.getConnection();
-        const sql = `insert into tankSetup(tsPerson, tsTank) values (?, ?)`;
         conn.query(sql, params, function(err, result) {
             if (err)
                 console.log(err);
             else {
-                //console.log('addTankSetupData(),', result);
                 callback();
             }
         });
         conn.end();
     },
-    getTankSenseData: function(tankNo, callback) {
+    getCurrentStep: function(callback){
         const conn = this.getConnection();
-        const sql = `select * from (select stemp, sph, date_format(stime, '%Y-%m-%d %T') as stime \
-            from senseTable where stank=? order by sid desc limit 10) as subview order by stime`;
-
-        conn.query(sql, tankNo, function(err, rows, fields) {
+        const sql = `SELECT aStep FROM actuator ORDER BY aid DESC LIMIT 1`;
+        
+        conn.query(sql, function(err, row, fields) {
             if (err)
                 console.log(err);
-            else {
-                callback(rows);
-            }
+            else
+                callback(row);
         });
         conn.end();
     },
-    
-    
+
 
     executeQuery: function(sql, callback) {
         const conn = this.getConnection();
