@@ -1,7 +1,7 @@
 const template = require('../common/template');
 const header = template.header();
 module.exports.conveyor = function (navBar, menuLink, itemObj, examTable, step) {
-  let aStep = step[0].aStep;
+  let astep = step[0].aStep;
 
   let exams = '';
   for (exam of examTable) {
@@ -13,6 +13,7 @@ module.exports.conveyor = function (navBar, menuLink, itemObj, examTable, step) 
         </tr>`;
   }
 
+  
   let items = '';
   for (item of itemObj) {
     items += `
@@ -26,8 +27,7 @@ module.exports.conveyor = function (navBar, menuLink, itemObj, examTable, step) 
           <input type="radio" class="form-check-input" name="itemChoose" value="${item.itemName}">
         </label>
       </div></div>
-`;
-  }
+`;}
 
   let chooseModal = `
 <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#myModal">
@@ -59,8 +59,7 @@ Select Me!
       <button type="button" class="btn btn-dark" data-dismiss="modal" onclick="displayRadioValue()">Choose</button>
       <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
     </div>
-    <br>  
-       
+    <br>     
     <script> 
         function displayRadioValue() { 
             var ele = document.getElementsByName('itemChoose'); 
@@ -75,6 +74,13 @@ Select Me!
                 }
             }
         }
+        function displayConveyorStep() { 
+          var step = document.getElementsByName('aStep');  
+          for(i = 0; i < step.length; i++) { 
+            document.getElementById("conveyor").src
+            = "/images/"+step[i].value+".gif";
+        }
+      }
     </script> 
   </div>
 </div>`
@@ -108,12 +114,12 @@ Select Me!
           <br>${chooseModal}</div>
           </div>
           <div class="col-10">
-          <img id="chooseShoes" src="/images/conveyor.png" width="600" height="200"  class="rounded" alt="Cinque Terre">
+          <img id="conveyor" src="/images/${astep}.gif" width="700" height="250"  class="rounded" alt="Cinque Terre">
           <br>
-          ${aStep}
-          <input type="hidden" name="aStep" value="${step[0].aStep}">
-          <button type="submit" class="btn btn-dark" name="start" value="1">Conveyor</button>
-          <button type="submit" class="btn btn-dark" name="start" value="0">Examine</button>
+          ${astep}
+          <input type="hidden" name="aStep" value="${astep}">
+          <button type="submit" class="btn btn-dark" name="start" value="${astep}">실행</button>
+          <button type="button" class="btn btn-dark" name="start" onclick="displayConveyorStep()">Examine</button>
           
           </div>
           <div class="col-12"><hr></div>

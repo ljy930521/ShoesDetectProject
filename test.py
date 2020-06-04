@@ -1,2 +1,2 @@
 print(90)
-print('bad')
+print('good')
