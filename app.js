@@ -98,9 +98,8 @@ app.post('/conveyor', function (req, res) {
     let jsonData = JSON.stringify(actuator);
 
 
-    if (eItemName !== undefined && conStart == end) //시작버튼 누를때 시작
-    {
-        if (end == 0) {
+    if (end == 0) {
+        if (eItemName !== undefined && conStart == end) { //시작버튼 누를때 시작
             sm.writeActuator(jsonData, function () {
                 setTimeout(function () {
                     try {
@@ -110,18 +109,29 @@ app.post('/conveyor', function (req, res) {
                     }
                 }, 7000);
             });
-        } else if (end == 1) {
+        }else {
+            let html = alert.alertMsg('검사 할 상품을 선택해주세요.', '/conveyor');
+            res.send(html);
+        }
+    
+    } else if (end == 1) { // conveyor 1
+        if (eItemName !== undefined) {
             sm.writeActuator(jsonData, function () {
                 setTimeout(function () {
-
                     try {
-                        res.redirect('/conveyor'); // home 화면으로 보내기
+                        res.redirect('/conveyor'); 
                     } catch (ex) {
                         console.log(ex);
                     }
                 }, 10000);
             });
-        } else if (end == 2) {
+        }else {
+            let html = alert.alertMsg('검사 할 상품을 선택해주세요.', '/conveyor');
+            res.send(html);
+        }
+    
+    } else if (end == 2) {
+        if (eItemName !== undefined) {
             ps.pythonRun(function (exam) { //python start!
                 let eSmr = exam[0];
                 let eDeg = exam[1];
@@ -168,38 +178,56 @@ app.post('/conveyor', function (req, res) {
                     })
                 })
             })
-        } else if (end == 3) { // bad servomotor
-            actuator.start = end; // bad서보모터 구동
-            let badJsonData = JSON.stringify(actuator);
-            sm.writeActuator(badJsonData, function () {
-                setTimeout(function () {
-                    try {
-                        res.redirect(`/conveyor`);
-                    } catch (ex3) {
-                        console.log(ex3);
-                    }
-                }, 10000);
-            })
-        } else if (end == 4) { // good servomotor + conveyor2
-            actuator.start = end; // bad서보모터 구동
-            let goodJsonData = JSON.stringify(actuator);
-            sm.writeActuator(goodJsonData, function () {
-                setTimeout(function () {
-                    try {
-                        res.redirect(`/conveyor`);
-                    } catch (ex4) {
-                        console.log(ex4);
-                    }
-                }, 10000);
-            })
+        }else {
+            let html = alert.alertMsg('검사 할 상품을 선택해주세요.', '/conveyor');
+            res.send(html);
         }
+    
+    } else if (end == 3) { // bad servomotor
+        actuator.start = end; // bad서보모터 구동
+        let badJsonData = JSON.stringify(actuator);
+        sm.writeActuator(badJsonData, function () {
+            setTimeout(function () {
+                try {
+                    res.redirect(`/conveyor`);
+                } catch (ex3) {
+                    console.log(ex3);
+                }
+            }, 10000);
+        })
+    } else if (end == 4) { // good servomotor + conveyor2
+        actuator.start = end; // bad서보모터 구동
+        let goodJsonData = JSON.stringify(actuator);
+        sm.writeActuator(goodJsonData, function () {
+            setTimeout(function () {
+                try {
+                    res.redirect(`/conveyor`);
+                } catch (ex4) {
+                    console.log(ex4);
+                }
+            }, 10000);
+        })
     } else if (conStart == 0) { //중지버튼누를때
         res.redirect(`/conveyor`);
-    } else {
-        let html = alert.alertMsg('검사 할 상품을 선택해주세요.', '/conveyor');
+    } 
+});
+app.get('/chart',function(req,res){
+    if (req.session.userId === undefined) {
+        let html = alert.alertMsg('시스템을 사용하려면 먼저 로그인하세요.', '/');
         res.send(html);
+    } else {
+        // dbModule.getCurrentSensor(function(sensor) {
+        //     dbModule.getCurrentActuator(function(actuator) {
+        wm.getWeather(function (weather) {
+            let navBar = template.navBar(true, weather, req.session.userName);
+            let menuLink = template.menuLink(template.CHART_MENU);
+            let view = require('./view/common/chart');
+            let html = view.chart(navBar, menuLink);
+            res.send(html);
+        });
+        //     });
+        // });
     }
-
 });
 // app.get('/sensor', function(req, res) {
 //     if (req.session.userId === undefined) {

@@ -16,87 +16,87 @@ const createUserSql = `
         regDate DATETIME DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY(deptId) REFERENCES dept(did))
 `;
-const createShoesListSql = `
-CREATE TABLE IF NOT EXISTS tank (
-    tid INT NOT NULL PRIMARY KEY,
-    operating INT DEFAULT 0,
-    fish VARCHAR(20) NOT NULL,
-    temp FLOAT NOT NULL,
-    ph FLOAT NOT NULL,
-    oxygen FLOAT NOT NULL
-    );
+const createItemSql = `
+    CREATE TABLE IF NOT EXISTS item (
+        iid INTEGER AUTO_INCREMENT,
+        itemNum varchar(45) NOT NULL,
+        itemName varchar(50) NOT NULL,
+        itemImg varchar(45) NOT NULL,
+        isDeleted INTEGER DEFAULT 0,
+        PRIMARY KEY (iid)
+    )
 `;
-// const createTankSql = `
-//     CREATE TABLE IF NOT EXISTS tank (
-//         tid INT NOT NULL PRIMARY KEY,
-//         operating INT DEFAULT 0,
-//         fish VARCHAR(20) NOT NULL,
-//         temp FLOAT NOT NULL,
-//         ph FLOAT NOT NULL,
-//         oxygen FLOAT NOT NULL
-//     );
-// `;
-// const createTankSetupSql = `
-//     CREATE TABLE IF NOT EXISTS tankSetup (
-//         tsId INT PRIMARY KEY AUTO_INCREMENT,
-//         tsTime DATETIME DEFAULT CURRENT_TIMESTAMP,
-//         tsPerson VARCHAR(12) NOT NULL,
-//         tsTank JSON NOT NULL
-//     );
-// `;
-// const createSenseTableSql = `
-//     CREATE TABLE IF NOT EXISTS senseTable (
-//         sid INT PRIMARY KEY AUTO_INCREMENT,
-//         stank INT NOT NULL,
-//         stemp FLOAT NOT NULL,
-//         sph FLOAT NOT NULL,
-//         stime DATETIME DEFAULT CURRENT_TIMESTAMP
-//     );
-// `;
-
+const createExamineSql = `
+    CREATE TABLE IF NOT EXISTS examine (
+        eid INTEGER NOT NULL AUTO_INCREMENT,
+        e_uid varchar(12) NOT NULL,
+        e_itemName varchar(50) NOT NULL,
+        eTime datetime DEFAULT CURRENT_TIMESTAMP,
+        eSmr float NOT NULL,
+        eDeg varchar(30) NOT NULL,
+        eDefRate float NOT NULL,
+        eImg varchar(30) DEFAULT NULL,
+        PRIMARY KEY (eid)
+    ) 
+`;
+const createActuatorSql = `
+    CREATE TABLE IF NOT EXISTS actuator (
+        aid INTEGER NOT NULL AUTO_INCREMENT,
+        aStep INTEGER NOT NULL DEFAULT 0,
+        aTime datetime DEFAULT CURRENT_TIMESTAMP,
+        PRIMARY KEY (aid)
+    )
+`;
 const insertDeptSql = "INSERT INTO dept VALUES(?, ?)";
-const insertUserSql = `INSERT INTO user(uid, password, name, deptId, tel) VALUES('admin', '1234', '관리자', 101, '010-2345-6789')`;
-const insertTankSql = `INSERT INTO tank VALUES (?, ?, ?, ?, ?, ?)`;
-const insertTankSetupSql = `INSERT INTO tankSetup(tsPerson, tsTank) VALUES(?, ?)`;
+const insertUserSql = `INSERT INTO user(uid, password, name, deptId, tel) VALUES('admin', '1234', '관리자', 101, '010-3750-4572')`;
 const insertExamineSql = `INSERT INTO examine(eid, e_uid, e_itemName, eSmr, eDeg, eDefRate, eImg) VALUES(?, ?, ?, ?, ?, ?, ?)`;
-const examData = [
-    [1, '관리자','SACAI', 90, '상', 100, 'good.jpg']
-];
+const insertItemSql = `INSERT INTO item(itemNum, itemName, itemImg) VALUES(?, ?, ?)`;
 const deptData = [
     [101, '경영지원팀'],
-    [102, '영업팀'],
+    [102, '디자인팀'],
     [103, '생산팀'],
-    [104, '연구개발팀']
+    [104, '시설팀'],
+    [105, '개발팀']
 ];
-const tankData = [
-    [1, 1, '장어 치어', 29.4, 5.6, 0.21],
-    [2, 1, '장어 소', 29.4, 5.6, 0.21],
-    [3, 1, '장어 소', 29.4, 6.3, 0.21],
-    [4, 1, '장어 중', 29.4, 5.6, 0.21],
-    [5, 1, '장어 중', 29.4, 5.4, 0.21],
-    [6, 1, '장어 중', 29.4, 5.6, 0.21],
-    [7, 1, '장어 대', 30.9, 5.5, 0.21],
-    [8, 1, '장어 대', 29.4, 5.6, 0.21],
-    [9, 1, '장어 대', 30.1, 5.6, 0.21],
-    [10, 0, ' ', 0.0, 0.0, 0.0]
+const examData = [
+    [1, '관리자','Sacai x LDWaffle VB', 96.6, 'perfect', 0, 'perfect.jpg']
 ];
-
-// dm.executeQuery(createDeptSql, function() {
-    // console.log("Dept Table is created");
-    for (let dept of examData) {
-        dm.executeQueryWithParams(insertExamineSql, dept, function() {
-            console.log("record inserted");
+const itemData = [
+    ['483513W06E37070', 'TRIPLE S TRAINERS YG', 'TRIPLE S TRAINERS YG.jpg'],
+    ['AA3834 101', 'Jordan 1 Retro High Off-White Chicago', 'Jordan 1 Retro High Off-White Chicago.jpg'],
+    ['bv0073-400', 'Sacai x LDWaffle VB', 'Sacai x LDWaffle VB.jpg']
+];
+    // Table에 입력하는 순서에 주의
+dm.executeQuery(createDeptSql, function() {
+    for (let dept of deptData) {
+        dm.executeQueryWithParams(insertDeptSql, dept, function() {
+            
         });
-    }
-// });
-
-/* dm.executeQuery(createUserSql, function() {
+    }console.log("dept inserted");
+});
+dm.executeQuery(createUserSql, function() {
     console.log("User Table is created");
     dm.executeQuery(insertUserSql, function() {
-        console.log("user record inserted");
+        console.log("user inserted");
     });
-}); */
-
+});
+dm.executeQuery(createExamineSql, function() {
+    for (let exam of examData) {
+        dm.executeQueryWithParams(insertExamineSql, exam, function() {
+            
+        });
+    }console.log("exam inserted");
+});
+dm.executeQuery(createItemSql, function() {
+    for (let item of itemData) {
+        dm.executeQueryWithParams(insertItemSql, item, function() {
+            
+        });
+    }console.log("item inserted");
+});
+dm.executeQuery(createActuatorSql, function() {
+    console.log("actuator inserted");
+});
 /* dm.executeQuery(createTankSql, function() {
     console.log("Tank Table is created");
     for (let tank of tankData) {

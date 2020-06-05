@@ -119,7 +119,7 @@ Select Me!
           ${astep}
           <input type="hidden" name="aStep" value="${astep}">
           <button type="submit" class="btn btn-dark" name="start" value="${astep}">실행</button>
-          <button type="button" class="btn btn-dark" name="start" onclick="displayConveyorStep()">Examine</button>
+          <button type="button" class="btn btn-dark" name="start" onclick="displayConveyorStep()">새로고침</button>
           
           </div>
           <div class="col-12"><hr></div>
@@ -129,7 +129,7 @@ Select Me!
                     <tr class="active">
                         <th scope="col">검사ID</th><th scope="col">검사ItemName</th>
                         <th scope="col">검사시간</th><th scope="col">유사도</th>
-                        <th scope="col">불량정도</th><th scope="col">불량률</th>
+                        <th scope="col">불량정도</th><th scope="col"> 종류별<br>불량률</th>
                     </tr>
                 </thead>
                 <tbody>

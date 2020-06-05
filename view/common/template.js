@@ -4,6 +4,7 @@ module.exports = {
     CONVEYOR_MENU:2,
     USER_MENU:3,
     GALLERY_MENU:4,
+    CHART_MENU:5,
     navBar: function(isHome, weather, userName) {
         let homeLink = isHome ? `<a class="nav-link active" href="#">Home</a>`: `<a class="nav-link" href="/home">Home</a>`;
         return `
@@ -32,6 +33,7 @@ module.exports = {
         let conveyorLink = `<a class="nav-link" href="/conveyor">Conveyor</a>`;
         let userLink = `<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">`;
         let galleryLink = `<a class="nav-link" href="/gallery">갤러리</a>`;
+        let chartLink = `<a class="nav-link" href="/chart">Chart</a>`;
         switch(menu) {
             case this.ITEM_MENU:     // item 메뉴를 눌렀을 경우
                 itemLink = `<a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">`;
@@ -44,6 +46,9 @@ module.exports = {
                 break;
             case this.GALLERY_MENU:     // Gallery 메뉴를 눌렸을 경우
                 galleryLink = `<a class="nav-link active" href="#">갤러리</a>`;
+                break;
+            case this.CHART_MENU:     // Gallery 메뉴를 눌렸을 경우
+                chartLink = `<a class="nav-link active" href="#">Chart</a>`;
                 break;
             default:
                 break;
@@ -77,6 +82,9 @@ module.exports = {
                     ${galleryLink}
                 </li>
                 <li class="nav-item">
+                    ${chartLink}
+                </li>
+                <li class="nav-item">
                     <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true"></a>
                 </li>
             </ul>
@@ -100,6 +108,7 @@ module.exports = {
             <script src="/fontawesome/all.min.js"></script>
             <script src="/jquery/jquery.min.js"></script>
             <script src="/js/bootstrap.bundle.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
         `;
     }
 }

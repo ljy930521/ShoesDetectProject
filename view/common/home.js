@@ -19,8 +19,8 @@ module.exports.home = function(navBar, menuLink) {
             ${menuLink}
         </div>
         <div class="col-10">
-            <div class="row" style="margin-left: 10px">
-                <div class="col-12"><h1>Shoes DC</h1></div>
+            <div class="row" style="text-align: center;">
+                <div class="col-12"><h1><img src="favicon.png">&nbsp;&nbsp;&nbsp;Shoes DC</h1></div>
                 <div class="col-12"><hr></div>
                 <div class="col-12">
                     <img id="home" src="home.gif" width="900" height="350"  class="rounded" alt="Cinque Terre">
