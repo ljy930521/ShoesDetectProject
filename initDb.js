@@ -48,9 +48,10 @@ const createActuatorSql = `
     )
 `;
 const insertDeptSql = "INSERT INTO dept VALUES(?, ?)";
-const insertUserSql = `INSERT INTO user(uid, password, name, deptId, tel) VALUES('admin', '1234', '관리자', 101, '010-3750-4572')`;
+const insertUserSql = `INSERT INTO user(uid, password, name, deptId, tel) VALUES(?, ?, ?, ?, ?)`;
 const insertExamineSql = `INSERT INTO examine(eid, e_uid, e_itemName, eSmr, eDeg, eDefRate, eImg) VALUES(?, ?, ?, ?, ?, ?, ?)`;
 const insertItemSql = `INSERT INTO item(itemNum, itemName, itemImg) VALUES(?, ?, ?)`;
+const userData = ['admin', '1234', '관리자', 101, '010-3750-4572']
 const deptData = [
     [101, '경영지원팀'],
     [102, '디자인팀'],
@@ -59,42 +60,47 @@ const deptData = [
     [105, '개발팀']
 ];
 const examData = [
-    [1, '관리자','Sacai x LDWaffle VB', 96.6, 'perfect', 0, 'perfect.jpg']
+    [1, '관리자', 'Sacai x LDWaffle VB', 96.6, 'perfect', 0, 'perfect.jpg']
 ];
 const itemData = [
     ['483513W06E37070', 'TRIPLE S TRAINERS YG', 'TRIPLE S TRAINERS YG.jpg'],
     ['AA3834 101', 'Jordan 1 Retro High Off-White Chicago', 'Jordan 1 Retro High Off-White Chicago.jpg'],
     ['bv0073-400', 'Sacai x LDWaffle VB', 'Sacai x LDWaffle VB.jpg']
 ];
-    // Table에 입력하는 순서에 주의
-dm.executeQuery(createDeptSql, function() {
+// Table에 입력하는 순서에 주의
+dm.executeQuery(createDeptSql, function () {
     for (let dept of deptData) {
-        dm.executeQueryWithParams(insertDeptSql, dept, function() {
-            
+        dm.executeQueryWithParams(insertDeptSql, dept, function () {
+
         });
-    }console.log("dept inserted");
+    }
+    console.log("dept inserted");
 });
-dm.executeQuery(createUserSql, function() {
+dm.executeQuery(createUserSql, function () {
     console.log("User Table is created");
-    dm.executeQuery(insertUserSql, function() {
-        console.log("user inserted");
-    });
+    for (let user of userData) {
+        dm.executeQuery(insertUserSql, user, function () {
+            console.log("user inserted");
+        });
+    }
 });
-dm.executeQuery(createExamineSql, function() {
+dm.executeQuery(createExamineSql, function () {
     for (let exam of examData) {
-        dm.executeQueryWithParams(insertExamineSql, exam, function() {
-            
+        dm.executeQueryWithParams(insertExamineSql, exam, function () {
+
         });
-    }console.log("exam inserted");
+    }
+    console.log("exam inserted");
 });
-dm.executeQuery(createItemSql, function() {
+dm.executeQuery(createItemSql, function () {
     for (let item of itemData) {
-        dm.executeQueryWithParams(insertItemSql, item, function() {
-            
+        dm.executeQueryWithParams(insertItemSql, item, function () {
+
         });
-    }console.log("item inserted");
+    }
+    console.log("item inserted");
 });
-dm.executeQuery(createActuatorSql, function() {
+dm.executeQuery(createActuatorSql, function () {
     console.log("actuator inserted");
 });
 /* dm.executeQuery(createTankSql, function() {

@@ -1,8 +1,8 @@
 const template = require('../common/template');
 const header = template.header();
-module.exports.conveyor = function (navBar, menuLink, itemObj, examTable, step) {
+module.exports.conveyor = function (navBar, menuLink, itemObj, examTable, step, currentExam) {
   let astep = step[0].aStep;
-
+  let selected = currentExam[0].e_itemName;
   let exams = '';
   for (exam of examTable) {
       exams += `
@@ -79,8 +79,8 @@ Select Me!
           for(i = 0; i < step.length; i++) { 
             document.getElementById("conveyor").src
             = "/images/"+step[i].value+".gif";
+          }
         }
-      }
     </script> 
   </div>
 </div>`
@@ -109,8 +109,8 @@ Select Me!
           <div class="col-12"><hr></div>
           <div class="col-2">
           <br>
-          <img id="chooseShoes" src="/images/Shoes Name.jpg" width="100" height="100"  class="rounded" alt="Cinque Terre"><br>
-          <div id="result"></div>
+          <img id="chooseShoes" src="/images/${selected}.jpg" width="100" height="100"  class="rounded" alt="Cinque Terre"><br>
+          <div id="result">Selected: ${selected}</div>
           <br>${chooseModal}</div>
           </div>
           <div class="col-10">
@@ -118,6 +118,7 @@ Select Me!
           <br>
           ${astep}
           <input type="hidden" name="aStep" value="${astep}">
+          <input type="hidden" name="selected" value="${selected}">
           <button type="submit" class="btn btn-dark" name="start" value="${astep}">실행</button>
           <button type="button" class="btn btn-dark" name="start" onclick="displayConveyorStep()">새로고침</button>
           

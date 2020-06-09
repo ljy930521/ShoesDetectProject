@@ -1,24 +1,25 @@
 const template = require('./template');
 const header = template.header();
 
-module.exports.gallery = function(navBar, menuLink, result) {
+module.exports.gallery = function(navBar, menuLink, result, photos) {
+  
     let row1 = '';
-    for (let i=1; i<=8; i++) {         
+    for (let i=0; i<=7; i++) {         
         let number = (i < 10) ? `0${i}`: `${i}`;
-        row1 += `<td><img class="img-thumbnail" src="/photo/photo${number}.jpg" width="80"></td>`;
+        row1 += `<td><img class="img-thumbnail" src="/photo/${photos[i].eImg}" width="80"></td>`;
     }
     let row2 = '';
-    for (let i=9; i<=16; i++) {         
+    for (let i=8; i<=15; i++) {         
         let number = (i < 10) ? `0${i}`: `${i}`;
-        row2 += `<td><img class="img-thumbnail" src="/photo/photo${number}.jpg" width="80"></td>`;
+        row2 += `<td><img class="img-thumbnail" src="/photo/${photos[i].eImg}" width="80"></td>`;
     }
     let indicator = `<ol class="carousel-indicators">`;
     let items = '';
-    for (let i=1; i<=16; i++) {
+    for (let i=0; i<=15; i++) {
         indicator += (i == 1) ? `<li data-target="#carouselControl" data-slide-to="${i-1}" class="active"></li>`: `<li data-target="#carouselControl" data-slide-to="${i-1}"></li>`;
-        let number = (i < 10) ? `0${i}`: `${i}`;
+        
         items += (i == 1) ? `<div class="carousel-item active">`: `<div class="carousel-item">`;
-        items += `<img src="/photo/photo${number}.jpg" class="d-block w-100" alt="라즈베리파이와 아두이노에서 동작하는 사진">
+        items += `<img src="/photo/${photos[i].eImg}" class="d-block w-100" alt="검사 결과 사진">
                 </div>`;
     }
     indicator += '</ol>';
@@ -37,8 +38,8 @@ module.exports.gallery = function(navBar, menuLink, result) {
                 ${menuLink}
             </div>
             <div class="col-10">
-                <div class="row" style="margin-left: 10px">
-                    <div class="col-12"><h3>갤러리</h3></div>
+            <div class="row" style="text-align: center;">
+                    <div class="col-12"><h1><img src="favicon.png">&nbsp;&nbsp;&nbsp;Shoes DC</h1></div>
                     <div class="col-12"><hr></div>
                     <div class="col-12">
                         <div id="carouselControl" class="carousel slide" data-ride="carousel">

@@ -5,11 +5,11 @@ var options = {
   pythonPath: '',
   pythonOptions: ['-u'],
   scriptPath: './',
-  args: ['value1', 'value2']
+  args: ['value1', 'value2','value3']
 };
 module.exports = {
-  pythonRun: function(callback){
-    PythonShell.PythonShell.run('./test.py', null, function (err, results) {
+  pythonRun: function(selectedRun, callback){
+    PythonShell.PythonShell.run('./'+selectedRun+'.py', options, function (err, results) {
       if (err)
         console.log(err);
       else

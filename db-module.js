@@ -245,7 +245,7 @@ module.exports = {
     },    
     registerExam:    function(params, callback) {
         const conn = this.getConnection();
-        const sql = `INSERT INTO examine(e_uid, e_itemName, eSmr, eDeg, eDefRate, eImg) VALUES(?, ?, ?, ?, ?, ?)`;
+        const sql = `INSERT INTO examine(e_uid, e_itemName) VALUES(?, ?)`;
 
         conn.query(sql, params, function(err, result) {
             if (err)
@@ -277,6 +277,42 @@ module.exports = {
                 console.log(err);
             else
                 callback(row);
+        });
+        conn.end();
+    },
+    updateExam: function(params, callback) {
+        const conn = this.getConnection();
+        const sql = `UPDATE examine set eSmr=?, eDeg=?, eDefRate=?, eImg=? where eid ORDER BY eid DESC LIMIT 1`;
+
+        conn.query(sql, params, function(err, result) {
+            if (err)
+                console.log(err);
+            else
+                callback();
+        });
+        conn.end();
+    },
+    getCurruntExam: function(callback) {
+        const conn = this.getConnection();
+        const sql = `SELECT*FROM examine ORDER BY eid DESC LIMIT 1`;
+        
+        conn.query(sql, function(err, rows, fields) {
+            if (err)
+                console.log(err);
+            else
+                callback(rows);
+        });
+        conn.end();
+    },
+    getCurruntGallery: function(callback) {
+        const conn = this.getConnection();
+        const sql = `SELECT eImg from examine ORDER BY eid DESC LIMIT 16`;
+        
+        conn.query(sql, function(err, rows, fields) {
+            if (err)
+                console.log(err);
+            else
+                callback(rows);
         });
         conn.end();
     },
