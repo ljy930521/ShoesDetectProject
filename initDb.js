@@ -6,15 +6,15 @@ const createDeptSql = `
         name VARCHAR(20) NOT NULL)
 `;
 const createUserSql = `
-    CREATE TABLE IF NOT EXISTS user (
-        uid VARCHAR(12) PRIMARY KEY,
-        password VARCHAR(80) NOT NULL,
-        name VARCHAR(20) NOT NULL,
-        deptId INTEGER NOT NULL,
-        tel VARCHAR(20),
-        isDeleted INT DEFAULT 0,
-        regDate DATETIME DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY(deptId) REFERENCES dept(did))
+CREATE TABLE IF NOT EXISTS user (
+    uid VARCHAR(12) PRIMARY KEY,
+    password VARCHAR(80) NOT NULL,
+    name VARCHAR(20) NOT NULL,
+    deptId INTEGER NOT NULL,
+    tel VARCHAR(20),
+    isDeleted INT DEFAULT 0,
+    regDate DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(deptId) REFERENCES dept(did))
 `;
 const createItemSql = `
     CREATE TABLE IF NOT EXISTS item (
@@ -27,17 +27,17 @@ const createItemSql = `
     )
 `;
 const createExamineSql = `
-    CREATE TABLE IF NOT EXISTS examine (
+    CREATE TABLE examine (
         eid INTEGER NOT NULL AUTO_INCREMENT,
         e_uid varchar(12) NOT NULL,
         e_itemName varchar(50) NOT NULL,
         eTime datetime DEFAULT CURRENT_TIMESTAMP,
-        eSmr float NOT NULL,
-        eDeg varchar(30) NOT NULL,
-        eDefRate float NOT NULL,
-        eImg varchar(30) DEFAULT NULL,
+        eSmr float DEFAULT NULL,
+        eDeg varchar(30) DEFAULT NULL,
+        eDefRate float DEFAULT NULL,
+        eImg varchar(50) DEFAULT NULL,
         PRIMARY KEY (eid)
-    ) 
+    )
 `;
 const createActuatorSql = `
     CREATE TABLE IF NOT EXISTS actuator (
@@ -48,10 +48,9 @@ const createActuatorSql = `
     )
 `;
 const insertDeptSql = "INSERT INTO dept VALUES(?, ?)";
-const insertUserSql = `INSERT INTO user(uid, password, name, deptId, tel) VALUES(?, ?, ?, ?, ?)`;
+const insertUserSql = `INSERT INTO user(uid, password, name, deptId, tel) VALUES('admin', '1234', '관리자', 101, '010-2345-6789')`;
 const insertExamineSql = `INSERT INTO examine(eid, e_uid, e_itemName, eSmr, eDeg, eDefRate, eImg) VALUES(?, ?, ?, ?, ?, ?, ?)`;
 const insertItemSql = `INSERT INTO item(itemNum, itemName, itemImg) VALUES(?, ?, ?)`;
-const userData = ['admin', '1234', '관리자', 101, '010-3750-4572']
 const deptData = [
     [101, '경영지원팀'],
     [102, '디자인팀'],
@@ -67,27 +66,17 @@ const itemData = [
     ['AA3834 101', 'Jordan 1 Retro High Off-White Chicago', 'Jordan 1 Retro High Off-White Chicago.jpg'],
     ['bv0073-400', 'Sacai x LDWaffle VB', 'Sacai x LDWaffle VB.jpg']
 ];
-// Table에 입력하는 순서에 주의
+//Table에 입력하는 순서에 주의
 dm.executeQuery(createDeptSql, function () {
     for (let dept of deptData) {
         dm.executeQueryWithParams(insertDeptSql, dept, function () {
-
         });
     }
     console.log("dept inserted");
 });
-dm.executeQuery(createUserSql, function () {
-    console.log("User Table is created");
-    for (let user of userData) {
-        dm.executeQuery(insertUserSql, user, function () {
-            console.log("user inserted");
-        });
-    }
-});
 dm.executeQuery(createExamineSql, function () {
     for (let exam of examData) {
         dm.executeQueryWithParams(insertExamineSql, exam, function () {
-
         });
     }
     console.log("exam inserted");
@@ -95,13 +84,18 @@ dm.executeQuery(createExamineSql, function () {
 dm.executeQuery(createItemSql, function () {
     for (let item of itemData) {
         dm.executeQueryWithParams(insertItemSql, item, function () {
-
         });
     }
     console.log("item inserted");
 });
 dm.executeQuery(createActuatorSql, function () {
     console.log("actuator inserted");
+});
+dm.executeQuery(createUserSql, function () {
+    console.log("User Table is created");
+    dm.executeQuery(insertUserSql, function () {     
+    });
+    console.log("user inserted");
 });
 /* dm.executeQuery(createTankSql, function() {
     console.log("Tank Table is created");

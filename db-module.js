@@ -341,6 +341,18 @@ module.exports = {
         });
         conn.end();
     },
+    getExamChart: function(callback){
+        const conn = this.getConnection();
+        const sql = `select DATE_FORMAT(eTime, '%m월%d일') as date, sum(eSmr), count(*) AS count FROM shoesdetect.examine group by date ORDER BY date DESC LIMIT 10`;
+        
+        conn.query(sql, function(err, row, fields) {
+            if (err)
+                console.log(err);
+            else
+                callback(row);
+        });
+        conn.end();
+    },
 
 
     executeQuery: function(sql, callback) {

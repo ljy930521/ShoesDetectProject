@@ -6,6 +6,9 @@ from matplotlib import pyplot as plt
 CAM_ID = 0
 def capture(camid = CAM_ID):
     cam = cv2.VideoCapture(camid)
+    # focus = 5  # min: 0, max: 255, increment:5
+    # cam.set(28, focus)
+    # cam.set(cv2.CAP_PROP_AUTOFOCUS, 1)
     if cam.isOpened() == False:
         print ('cant open the cam (%d)' % camid)
         return None
@@ -14,10 +17,8 @@ def capture(camid = CAM_ID):
     if frame is None:
         print ('frame is not exist')
         return None
-    
-    # png로 압축 없이 영상 저장 
 
-    cv2.imwrite('test1.jpg', frame, [cv2.IMWRITE_JPEG_QUALITY, 100])
+    cv2.imwrite('train.jpg', frame, [cv2.IMWRITE_JPEG_QUALITY, 100])
     cam.release()
 
 if __name__ == '__main__':
@@ -26,12 +27,12 @@ if __name__ == '__main__':
  
 MIN_MATCH_COUNT = 10
  
-img1 = cv2.imread('test.jpg',0) # queryImage
-img2 = cv2.imread('test1.jpg',0) # trainImage
+img1 = cv2.imread('./python/TRIPLE S TRAINERS YG.jpg',0) # queryImage
+img2 = cv2.imread('./python/train.jpg',0) # trainImage
  
 # Initiate SIFT detector
 
-orb = cv2.ORB_create()
+orb = cv2.ORB_create(nfeatures=1500)
 
 
 # find the keypoints and descriptors with SIFT
@@ -40,7 +41,7 @@ kp2, des2 = orb.detectAndCompute(img2,None)
 
 FLANN_INDEX_KDTREE = 0
 FLANN_INDEX_LSH = 6
-index_params = dict(algorithm=FLANN_INDEX_LSH, table_number=30, key_size=20, multi_probe_level=3)
+index_params = dict(algorithm=FLANN_INDEX_LSH, table_number=30, key_size=20, multi_probe_level=4)
 search_params = dict(checks = 500) #특성매칭을 위한 반복 횟수 크게잡을수록 정확 but 느려짐
  
 flann = cv2.FlannBasedMatcher(index_params, search_params)
@@ -60,7 +61,7 @@ print(matcheRate*100)
 if float(matcheRate) > 0.9:
     name = 'perfect.jpg'
     print("perfect")
-elif float(matcheRate) > 0.85 and float(matcheRate) <= 0.9:
+elif float(matcheRate) > 0.75 and float(matcheRate) <= 0.9:
     name = 'good.jpg'
     print("good")
 else:
@@ -93,6 +94,6 @@ img3 = cv2.drawMatches(img1,kp1,img2,kp2,good,None,**draw_params)
 now = datetime.datetime.now().strftime("%Y-%m-%d %H%M%S.") 
 #plt.imshow(img3, 'gray'),plt.show()
 #cv2.imshow("gray", img3)
-cv2.imwrite('./public/photo/'+str(now)+name, img3)
-print(str(now)+name.jpg)
+cv2.imwrite('../public/photo/'+str(now)+name, img3)
+print(str(now)+name)
 cv2.waitKey(0)

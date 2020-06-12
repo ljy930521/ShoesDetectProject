@@ -10,6 +10,7 @@ const dbModule = require('./db-module');
 const sm = require('./serial-module');
 const ps = require('./python-shell');
 
+
 const app = express();
 app.use(bodyParser.urlencoded({
     extended: false
@@ -102,7 +103,7 @@ app.post('/conveyor', function (req, res) {
 
 
     if (end == 0) {
-        if (selected !== undefined && conStart == end) { //시작버튼 누를때 시작
+        if (selected !== undefined) { //시작버튼 누를때 시작
             let regParams = [eUid, selected]
             dbModule.registerExam(regParams, function(){
 
@@ -113,11 +114,11 @@ app.post('/conveyor', function (req, res) {
                         } catch (ex) {
                             console.log(ex);
                         }
-                    }, 7000);
+                    }, 5000);
                 });
             })
         }else {
-            let html = alert.alertMsg('검사 할 상품을 선택해주세요.', '/conveyor');
+            let html = alert.alertMsg('상품을 선택해주시면 검사를 시작합니다.', '/conveyor');
             res.send(html);
         }
     
@@ -130,13 +131,9 @@ app.post('/conveyor', function (req, res) {
                     } catch (ex) {
                         console.log(ex);
                     }
-                }, 8000);
+                }, 7000);
             });
-        }else {
-            let html = alert.alertMsg('검사 할 상품을 선택해주세요.', '/conveyor');
-            res.send(html);
-        }
-    
+        }    
     } else if (end == 2) {
         if (eItemName !== undefined) {
             ps.pythonRun(eItemName, function (exam) { //python start!
@@ -159,7 +156,7 @@ app.post('/conveyor', function (req, res) {
                                         } catch (ex3) {
                                             console.log(ex3);
                                         }
-                                    }, 8000);
+                                    }, 7000);
                                 })
                             });
                         } else { //perfect, good examine db insert
@@ -176,18 +173,14 @@ app.post('/conveyor', function (req, res) {
                                         } catch (ex4) {
                                             console.log(ex4);
                                         }
-                                    }, 8000);
+                                    }, 7000);
                                 })
                             });
                         }
                     })
                 })
             })
-        }else {
-            let html = alert.alertMsg('검사 할 상품을 선택해주세요.', '/conveyor');
-            res.send(html);
-        }
-    
+        }    
     } else if (end == 3) { // bad servomotor
         actuator.start = end; // bad서보모터 구동
         let badJsonData = JSON.stringify(actuator);
@@ -198,7 +191,7 @@ app.post('/conveyor', function (req, res) {
                 } catch (ex3) {
                     console.log(ex3);
                 }
-            }, 8000);
+            }, 5000);
         })
     } else if (end == 4) { // good servomotor + conveyor2
         actuator.start = end; // bad서보모터 구동
@@ -210,7 +203,7 @@ app.post('/conveyor', function (req, res) {
                 } catch (ex4) {
                     console.log(ex4);
                 }
-            }, 8000);
+            }, 5000);
         })
     } else if (conStart == 0) { //중지버튼누를때
         res.redirect(`/conveyor`);
@@ -221,17 +214,17 @@ app.get('/chart',function(req,res){
         let html = alert.alertMsg('시스템을 사용하려면 먼저 로그인하세요.', '/');
         res.send(html);
     } else {
-        // dbModule.getCurrentSensor(function(sensor) {
+        dbModule.getExamChart(function(examData) {
         //     dbModule.getCurrentActuator(function(actuator) {
         wm.getWeather(function (weather) {
             let navBar = template.navBar(true, weather, req.session.userName);
             let menuLink = template.menuLink(template.CHART_MENU);
-            let view = require('./view/common/chart');
-            let html = view.chart(navBar, menuLink);
+            let view = require('./view/chart/chart');
+            let html = view.chart(navBar, menuLink, examData);
             res.send(html);
         });
         //     });
-        // });
+        });
     }
 });
 app.get('/gallery', function (req, res) {

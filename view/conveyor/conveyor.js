@@ -60,7 +60,26 @@ Select Me!
       <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
     </div>
     <br>     
-    <script> 
+    <script type="text/javascript">
+      var step = document.getElementsByName('aStep');
+      window.onload=function(){
+        var auto = setTimeout(function(){ 
+          autoRefresh(); 
+        }, 100);
+        function submitform(){
+          if(step[0].value!=='0'){
+            document.forms["myForm"].submit();
+          }
+        }
+
+        function autoRefresh(){
+          clearTimeout(auto);
+          auto = setTimeout(function(){ 
+            submitform(); 
+            }, 1000);
+          }
+        } 
+  
         function displayRadioValue() { 
             var ele = document.getElementsByName('itemChoose'); 
 
@@ -102,7 +121,7 @@ Select Me!
         ${menuLink}
       </div>
       <div class="col-10">
-      <form action="/conveyor" method="POST">
+      <form name="myForm" id="myForm" form action="/conveyor" method="POST">
         <div class="row" style="text-align: center;">
           <div class="col-2"><h3>신발선택</h3></div>
           <div class="col-10"><h3>컨베이어 작동</h3></div>
