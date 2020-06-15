@@ -109,7 +109,15 @@ module.exports = {
             <script src="/jquery/jquery.min.js"></script>
             <script src="/js/bootstrap.bundle.min.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
-            
+            <script src="https://www.chartjs.org/dist/2.9.3/Chart.min.js"></script>
+            <script src="https://www.chartjs.org/samples/latest/utils.js"></script>
+            <style>
+            canvas{
+                -moz-user-select: none;
+                -webkit-user-select: none;
+                -ms-user-select: none;
+            }
+            </style>
         `;
     }
 }

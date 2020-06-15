@@ -341,9 +341,21 @@ module.exports = {
         });
         conn.end();
     },
-    getExamChart: function(callback){
+    getExamChartDate: function(callback){
         const conn = this.getConnection();
-        const sql = `select DATE_FORMAT(eTime, '%m월%d일') as date, sum(eSmr), count(*) AS count FROM shoesdetect.examine group by date ORDER BY date DESC LIMIT 10`;
+        const sql = `select DATE_FORMAT(eTime, '%m월%d일') as date, sum(eSmr) as sum, count(*) AS count FROM shoesdetect.examine group by date ORDER BY date DESC LIMIT 10`;
+        
+        conn.query(sql, function(err, row, fields) {
+            if (err)
+                console.log(err);
+            else
+                callback(row);
+        });
+        conn.end();
+    },
+    getExamChartName: function(callback){
+        const conn = this.getConnection();
+        const sql = `select e_itemName as name, sum(eSmr) as sum, count(*) AS count, count(if(eDeg = 'perfect', eDeg, null)) as perfect , count(if(eDeg = 'good', eDeg, null)) as good, count(if(eDeg = 'bad', eDeg, null)) as bad FROM shoesdetect.examine group by name;`;
         
         conn.query(sql, function(err, row, fields) {
             if (err)

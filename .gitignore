@@ -7,7 +7,7 @@ mysqlConf.json
 public/photo/
 reference/
 arduino/
-chart/
+utils.js
 
 # Logs
 logs

@@ -214,16 +214,16 @@ app.get('/chart',function(req,res){
         let html = alert.alertMsg('시스템을 사용하려면 먼저 로그인하세요.', '/');
         res.send(html);
     } else {
-        dbModule.getExamChart(function(examData) {
-        //     dbModule.getCurrentActuator(function(actuator) {
+        dbModule.getExamChartDate(function(examData) {
+            dbModule.getExamChartName(function(examName) {
         wm.getWeather(function (weather) {
             let navBar = template.navBar(true, weather, req.session.userName);
             let menuLink = template.menuLink(template.CHART_MENU);
             let view = require('./view/chart/chart');
-            let html = view.chart(navBar, menuLink, examData);
+            let html = view.chart(navBar, menuLink, examData, examName);
             res.send(html);
         });
-        //     });
+            });
         });
     }
 });
