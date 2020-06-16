@@ -67,7 +67,7 @@ app.get('/conveyor', function (req, res) {
                     dbModule.getCurrentStep(function (step) {
                         dbModule.getConItems(function (conItem) {
                             dbModule.getAllExams(function (examTable) {
-                                dbModule.getCurruntExam(function (currentExam){
+                                dbModule.getCurruntExam(function (currentExam) {
                                     wm.getWeather(function (weather) {
                                         let navBar = template.navBar(false, weather, req.session.userName);
                                         let menuLink = template.menuLink(template.CONVEYOR_MENU);
@@ -91,8 +91,8 @@ app.get('/conveyor', function (req, res) {
 });
 app.post('/conveyor', function (req, res) {
     let eUid = req.session.userId;
-    let selected = req.body.itemChoose;//모달 선택
-    let eItemName = req.body.selected;//페이지 넘겨진후에도 선택된 값 유지
+    let selected = req.body.itemChoose; //모달 선택
+    let eItemName = req.body.selected; //페이지 넘겨진후에도 선택된 값 유지
 
     let conStart = req.body.start; //1
     let end = parseInt(req.body.aStep);
@@ -105,7 +105,7 @@ app.post('/conveyor', function (req, res) {
     if (end == 0) {
         if (selected !== undefined) { //시작버튼 누를때 시작
             let regParams = [eUid, selected]
-            dbModule.registerExam(regParams, function(){
+            dbModule.registerExam(regParams, function () {
 
                 sm.writeActuator(jsonData, function () {
                     setTimeout(function () {
@@ -117,23 +117,23 @@ app.post('/conveyor', function (req, res) {
                     }, 5000);
                 });
             })
-        }else {
+        } else {
             let html = alert.alertMsg('상품을 선택해주시면 검사를 시작합니다.', '/conveyor');
             res.send(html);
         }
-    
+
     } else if (end == 1) { // conveyor 1
         if (eItemName !== undefined) {
             sm.writeActuator(jsonData, function () {
                 setTimeout(function () {
                     try {
-                        res.redirect('/conveyor'); 
+                        res.redirect('/conveyor');
                     } catch (ex) {
                         console.log(ex);
                     }
                 }, 7000);
             });
-        }    
+        }
     } else if (end == 2) {
         if (eItemName !== undefined) {
             ps.pythonRun(eItemName, function (exam) { //python start!
@@ -180,7 +180,7 @@ app.post('/conveyor', function (req, res) {
                     })
                 })
             })
-        }    
+        }
     } else if (end == 3) { // bad servomotor
         actuator.start = end; // bad서보모터 구동
         let badJsonData = JSON.stringify(actuator);
@@ -207,22 +207,30 @@ app.post('/conveyor', function (req, res) {
         })
     } else if (conStart == 0) { //중지버튼누를때
         res.redirect(`/conveyor`);
-    } 
+    }
 });
-app.get('/chart',function(req,res){
+app.get('/chart', function (req, res) {
     if (req.session.userId === undefined) {
         let html = alert.alertMsg('시스템을 사용하려면 먼저 로그인하세요.', '/');
         res.send(html);
     } else {
-        dbModule.getExamChartDate(function(examData) {
-            dbModule.getExamChartName(function(examName) {
-        wm.getWeather(function (weather) {
-            let navBar = template.navBar(true, weather, req.session.userName);
-            let menuLink = template.menuLink(template.CHART_MENU);
-            let view = require('./view/chart/chart');
-            let html = view.chart(navBar, menuLink, examData, examName);
-            res.send(html);
-        });
+        dbModule.getExamChartDate(function (examData) {
+            dbModule.getExamChartName(function (examName) {
+                dbModule.getExamChartHour(function (examHour) {
+                    dbModule.getExamChart1(function(eDeg1){
+                        dbModule.getExamChart2(function(eDeg2){
+                            dbModule.getExamChart3(function(eDeg3){
+                                wm.getWeather(function (weather) {
+                                    let navBar = template.navBar(true, weather, req.session.userName);
+                                    let menuLink = template.menuLink(template.CHART_MENU);
+                                    let view = require('./view/chart/chart');
+                                    let html = view.chart(navBar, menuLink, examData, examName, examHour,eDeg1,eDeg2,eDeg3);
+                                    res.send(html);
+                                });
+                            })
+                        })
+                    })
+                });
             });
         });
     }
@@ -233,7 +241,7 @@ app.get('/gallery', function (req, res) {
         res.send(html);
     } else {
         let view = require('./view/common/gallery');
-        dbModule.getCurruntGallery(function(photos){
+        dbModule.getCurruntGallery(function (photos) {
             wm.getWeather(function (weather) {
                 let navBar = template.navBar(false, weather, req.session.userName);
                 let menuLink = template.menuLink(template.GALLERY_MENU);

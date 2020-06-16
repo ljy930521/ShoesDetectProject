@@ -2,7 +2,7 @@ const template = require('../common/template');
 const header = template.header();
 
 
-module.exports.chart = function(navBar, menuLink, examDatas, examNames) {
+module.exports.chart = function(navBar, menuLink, examDatas, examNames, examHours, eDef1, eDef2, eDef3) {
   let exams = '';
   for (exam of examDatas) {
       exams += `
@@ -31,6 +31,34 @@ module.exports.chart = function(navBar, menuLink, examDatas, examNames) {
   for (name of examNames){
     nameSmrAverage += `'${name.sum/name.count}',`;
   }
+  let nameSmrHour='';
+  for (hour of examHours){
+    nameSmrHour += `{x:${hour.hour},y:${hour.eSmr}},`;
+  }
+  let nameDeg1= '';
+  nameDeg1 += `${examNames[0].perfect/examNames[0].count*100},${examNames[0].good/examNames[0].count*100},${examNames[0].bad/examNames[0].count*100}`;
+  let nameDeg2= '';
+  nameDeg2 += `${examNames[1].perfect/examNames[1].count*100},${examNames[1].good/examNames[1].count*100},${examNames[1].bad/examNames[1].count*100}`;
+  let nameDeg3= '';
+  nameDeg3 += `${examNames[2].perfect/examNames[2].count*100},${examNames[2].good/examNames[2].count*100},${examNames[2].bad/examNames[2].count*100}`;
+
+  let eDef1Date = '';
+  for (exam of eDef1){
+    eDef1Date += `'${exam.date}',`;
+  }
+  let eDefOne = '';
+  for (exam of eDef1){
+    eDefOne += `'${exam.eDefRate}',`;
+  }
+  let eDefTwo = '';
+  for (exam of eDef2){
+    eDefTwo += `'${exam.eDefRate}',`;
+  }
+  let eDefThr = '';
+  for (exam of eDef3){
+    eDefThr += `'${exam.eDefRate}',`;
+  }
+
     return `
 <!DOCTYPE html>
 <html lang="ko">
@@ -49,9 +77,6 @@ module.exports.chart = function(navBar, menuLink, examDatas, examNames) {
         <div class="col-12"><h1><img src="favicon.png">&nbsp;&nbsp;&nbsp;Shoes DC Chart</h1></div>
         <div class="col-12"><hr></div>
         <div class="col-6">
-        ${examDatas.length}
-        ${examName}
-        ${nameSmrAverage}
         <canvas id="bar-chart" width="800" height="500"></canvas>
             <script>
             // Bar chart
@@ -101,60 +126,60 @@ module.exports.chart = function(navBar, menuLink, examDatas, examNames) {
           });
           </script>
         </div>
+        <div class="col-12"><hr></div>
         <div class="col-6">
-          <canvas id="canvas" width="800" height="600"></canvas>
-          <script>
-            var config = {
-              type: 'line',
-              data: {
-                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-                datasets: [{
-                  type: 'line',
-                  label: 'Perfect(90-100) Cutline',
-                  fill: true,
-                  data: [100,100,100,100,100,100,100],
-                  borderColor: '#3cba9f'
-                }, {
-                  type: 'line',
-                  label: 'Good(75-90) Cutline',
-                  fill: true,
-                  data: [90,90,90,90,90,90,90],
-                  borderColor: '#e8c3b9'
-                }, {
-                  type: 'line',
-                  label: 'BAD(0-70) Cutline',
-                  fill: true,
-                  data: [70,70,70,70,70,70,70],
-                  borderColor: '#c45850'
-                }]
-              },
-              options: {
-                responsive: true,
-                title: {
-                  display: true,
-                  text: 'Grid Line Settings'
+        <h6>오늘의 검사내역</h6>
+          <canvas id="canvas" width="800", height="600"></canvas>
+            <script>
+            var ctx = document.getElementById('canvas').getContext('2d');
+            var myLineChart = new Chart(ctx, {
+                type: 'scatter',
+                data: {
+                    datasets: [{
+                        label: '유사도',
+                        data: [
+                          ${nameSmrHour},
+                        ],
+                        pointBorderColor: '#8e5ea2',
+                        pointBackgroundColor: 'rgba(255, 180, 150, 1)',
+                        borderColor: '#8e5ea2',
+                        backgroundColor: 'rgba(255, 180, 150, 1)',
+                        pointRadius: 5
+                    }, {
+                        type: 'line',
+                        label: 'Perfect(90-100) Cutline',
+                        fill: true,
+                        data: [{x:0, y:100}, {x:24, y:100}],
+                        borderColor: '#3cba9f'
+                    }, {
+                        type: 'line',
+                        label: 'Good(75-90) Cutline',
+                        fill: true,
+                        data: [{x:0, y:90}, {x:24, y:90}],
+                        borderColor: '#f0af7a'
+                    },{
+                        type: 'line',
+                        label: 'Bad(0-70) Cutline',
+                        fill: true,
+                        data: [{x:0, y:75}, {x:24, y:75}],
+                        borderColor: '#c45850'
+                    }]
                 },
-                scales: {
-                  y: {
-                    gridLines: {
-                      drawBorder: false,
-                      color: ['pink', 'red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'purple']
-                    },
-                    min: 0,
-                    max: 100,
-                    ticks: {
-                      stepSize: 10
-                      
+                options: {
+                    scales: {
+                        xAxes: [{
+                            type: 'linear',
+                            position: 'bottom'
+                        }],
+                        yAxes: [{
+                            ticks: {
+                                min: 0
+                            }
+                        }]
                     }
-                  }
                 }
-              }
-            };
-          window.onload = function() {
-          var ctx = document.getElementById('canvas').getContext('2d');
-          window.myLine = new Chart(ctx, config);
-          };
-          </script>
+            });
+            </script>
         </div>
         <div class="col-6">
           <canvas id="line-chart" width="800" height="600"></canvas>
@@ -162,19 +187,19 @@ module.exports.chart = function(navBar, menuLink, examDatas, examNames) {
             new Chart(document.getElementById("line-chart"), {
               type: 'line',
               data: {
-              labels: ['5월28일','5월29일','6월02일','6월03일','6월4일'],
+              labels: [${eDef1Date}],
               datasets: [{ 
-                data: [80.5,0,0,0,0],
+                data: [${eDefOne}],
                 label: "Sacai x LDWaffle VB",
                 borderColor: "#3e95cd",
                 fill: false
               }, { 
-                data: [0,0,87.5,90.5,90.4],
+                data: [${eDefTwo}],
                 label: "TRIPLE S TRAINERS YG",
                 borderColor: "#8e5ea2",
                 fill: false
               }, { 
-                data: [0,0,0,94,0],
+                data: [${eDefThr}],
                 label: "Jordan 1 Retro High Off-White Chicago",
                 borderColor: "#3cba9f",
                 fill: false
@@ -184,12 +209,13 @@ module.exports.chart = function(navBar, menuLink, examDatas, examNames) {
             options: {
               title: {
                 display: true,
-                text: '신발별 당일 평균 유사도'
+                text: '신발별 검사 불량률 변화'
               }
             }
           });
           </script>
-        </div>        
+        </div>
+        <div class="col-12"><hr></div>        
         <div class="col-12">
           <div class="row">
             <div class="col-sm-4">
@@ -202,7 +228,7 @@ module.exports.chart = function(navBar, menuLink, examDatas, examNames) {
                   datasets: [{
                     label: "비율",
                     backgroundColor: ["#3e95cd", "#3cba9f","#f0af7a",/"#e8c3b9","#c45850"/],
-                    data: [0.45,0.33,0.22]
+                    data: [${nameDeg1}]
                   }]
                 },
                 options: {
@@ -224,7 +250,7 @@ module.exports.chart = function(navBar, menuLink, examDatas, examNames) {
                   datasets: [{
                     label: "비율",
                     backgroundColor: ["#3e95cd", "#3cba9f","#f0af7a",/"#e8c3b9","#c45850"/],
-                    data: [0.45,0.33,0.22]
+                    data: [${nameDeg2}]
                   }]
                 },
                 options: {
@@ -246,7 +272,7 @@ module.exports.chart = function(navBar, menuLink, examDatas, examNames) {
                   datasets: [{
                     label: "비율",
                     backgroundColor: ["#3e95cd", "#3cba9f","#f0af7a",/"#e8c3b9","#c45850"/],
-                    data: [0.45,0.33,0.22]
+                    data: [${nameDeg3}]
                   }]
                 },
                 options: {
@@ -258,6 +284,7 @@ module.exports.chart = function(navBar, menuLink, examDatas, examNames) {
                 });
               </script>
             </div>
+         
           </div>
         </div>
         <div class="col-12">

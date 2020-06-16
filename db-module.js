@@ -365,6 +365,54 @@ module.exports = {
         });
         conn.end();
     },
+    getExamChartHour: function(callback){
+        const conn = this.getConnection();
+        const sql = `select DATE_FORMAT(eTime, '%H') as hour, eSmr from shoesdetect.examine where eTime > curdate();`;
+        
+        conn.query(sql, function(err, row, fields) {
+            if (err)
+                console.log(err);
+            else
+                callback(row);
+        });
+        conn.end();
+    },
+    getExamChart1: function(callback){
+        const conn = this.getConnection();
+        const sql = `SELECT DATE_FORMAT(eTime, '%m월%d일') as date, e_itemName, eDefRate FROM shoesdetect.examine ORDER BY e_itemName='Sacai x LDWaffle VB' DESC LIMIT 5;`;
+        
+        conn.query(sql, function(err, row, fields) {
+            if (err)
+                console.log(err);
+            else
+                callback(row);
+        });
+        conn.end();
+    },
+    getExamChart2: function(callback){
+        const conn = this.getConnection();
+        const sql = `SELECT e_itemName, eDefRate FROM shoesdetect.examine ORDER BY e_itemName='TRIPLE S TRAINERS YG' DESC LIMIT 5;`;
+        
+        conn.query(sql, function(err, row, fields) {
+            if (err)
+                console.log(err);
+            else
+                callback(row);
+        });
+        conn.end();
+    },
+    getExamChart3: function(callback){
+        const conn = this.getConnection();
+        const sql = `SELECT e_itemName, eDefRate FROM shoesdetect.examine ORDER BY e_itemName='Jordan 1 Retro High Off-White Chicago' DESC LIMIT 5;`;
+        
+        conn.query(sql, function(err, row, fields) {
+            if (err)
+                console.log(err);
+            else
+                callback(row);
+        });
+        conn.end();
+    },
 
 
     executeQuery: function(sql, callback) {
