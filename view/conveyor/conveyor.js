@@ -2,6 +2,24 @@ const template = require('../common/template');
 const header = template.header();
 module.exports.conveyor = function (navBar, menuLink, itemObj, examTable, step, currentExam) {
   let astep = step[0].aStep;
+  let astep2 =''
+  switch(astep){
+    case 0:
+      astep2 = '준비상태'
+    break;
+    case 1:
+      astep2 = '검사스팟이동'
+    break;
+    case 2:
+      astep2 = '검사중'
+    break;
+    case 3:
+      astep2 = '불량품'
+    break;
+    case 4:
+      astep2 = '양품'
+    break;
+  }
   let selected = currentExam[0].e_itemName;
   let exams = '';
   for (exam of examTable) {
@@ -93,9 +111,9 @@ Select Me!
                 }
             }
         }
-        function displayConveyorStep() { 
+        function displayConveyorStep() {
           var step = document.getElementsByName('aStep');  
-          for(i = 0; i < step.length; i++) { 
+          for(i = 0; i < step.length; i++) {
             document.getElementById("conveyor").src
             = "/images/"+step[i].value+".gif";
           }
@@ -131,15 +149,14 @@ Select Me!
           <img id="chooseShoes" src="/images/${selected}.jpg" width="100" height="100"  class="rounded" alt="Cinque Terre"><br>
           <div id="result">Selected: ${selected}</div>
           <br>${chooseModal}</div>
+          <br><br>${astep} : ${astep2}
           </div>
           <div class="col-10">
           <img id="conveyor" src="/images/${astep}.gif" width="700" height="250"  class="rounded" alt="Cinque Terre">
           <br>
-          ${astep}
           <input type="hidden" name="aStep" value="${astep}">
           <input type="hidden" name="selected" value="${selected}">
           <button type="submit" class="btn btn-dark" name="start" value="${astep}">실행</button>
-          <button type="button" class="btn btn-dark" name="start" onclick="displayConveyorStep()">새로고침</button>
           
           </div>
           <div class="col-12"><hr></div>

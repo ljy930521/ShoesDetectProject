@@ -9,7 +9,7 @@ var options = {
 };
 module.exports = {
   pythonRun: function(selectedRun, callback){
-    PythonShell.PythonShell.run('./python/'+selectedRun+'.py', options, function (err, results) {
+    PythonShell.PythonShell.run(selectedRun+'.py', options, function (err, results) {
       if (err)
         console.log(err);
       else

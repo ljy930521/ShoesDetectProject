@@ -377,6 +377,18 @@ module.exports = {
         });
         conn.end();
     },
+    getExamChart: function(callback){
+        const conn = this.getConnection();
+        const sql = `select DATE_FORMAT(eTime, '%m월%d일') as date FROM shoesdetect.examine group by date ORDER BY date desc LIMIT 5;`;
+        
+        conn.query(sql, function(err, row, fields) {
+            if (err)
+                console.log(err);
+            else
+                callback(row);
+        });
+        conn.end();
+    },
     getExamChart1: function(callback){
         const conn = this.getConnection();
         const sql = `SELECT DATE_FORMAT(eTime, '%m월%d일') as date, e_itemName, eDefRate FROM shoesdetect.examine ORDER BY e_itemName='Sacai x LDWaffle VB' DESC LIMIT 5;`;

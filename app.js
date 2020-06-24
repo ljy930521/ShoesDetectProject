@@ -217,16 +217,18 @@ app.get('/chart', function (req, res) {
         dbModule.getExamChartDate(function (examData) {
             dbModule.getExamChartName(function (examName) {
                 dbModule.getExamChartHour(function (examHour) {
-                    dbModule.getExamChart1(function(eDeg1){
-                        dbModule.getExamChart2(function(eDeg2){
-                            dbModule.getExamChart3(function(eDeg3){
-                                wm.getWeather(function (weather) {
-                                    let navBar = template.navBar(true, weather, req.session.userName);
-                                    let menuLink = template.menuLink(template.CHART_MENU);
-                                    let view = require('./view/chart/chart');
-                                    let html = view.chart(navBar, menuLink, examData, examName, examHour,eDeg1,eDeg2,eDeg3);
-                                    res.send(html);
-                                });
+                    dbModule.getExamChart(function(eDate){
+                        dbModule.getExamChart1(function(eDeg1){
+                            dbModule.getExamChart2(function(eDeg2){
+                                dbModule.getExamChart3(function(eDeg3){
+                                    wm.getWeather(function (weather) {
+                                        let navBar = template.navBar(true, weather, req.session.userName);
+                                        let menuLink = template.menuLink(template.CHART_MENU);
+                                        let view = require('./view/chart/chart');
+                                        let html = view.chart(navBar, menuLink, examData, examName, examHour, eDate, eDeg1, eDeg2, eDeg3);
+                                        res.send(html);
+                                    });
+                                })
                             })
                         })
                     })

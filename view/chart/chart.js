@@ -2,7 +2,7 @@ const template = require('../common/template');
 const header = template.header();
 
 
-module.exports.chart = function(navBar, menuLink, examDatas, examNames, examHours, eDef1, eDef2, eDef3) {
+module.exports.chart = function(navBar, menuLink, examDatas, examNames, examHours,eDate, eDef1, eDef2, eDef3) {
   let exams = '';
   for (exam of examDatas) {
       exams += `
@@ -37,14 +37,20 @@ module.exports.chart = function(navBar, menuLink, examDatas, examNames, examHour
   }
   let nameDeg1= '';
   nameDeg1 += `${examNames[0].perfect/examNames[0].count*100},${examNames[0].good/examNames[0].count*100},${examNames[0].bad/examNames[0].count*100}`;
+  let name1='';
+  name1 += `'${examNames[0].name}'`;
   let nameDeg2= '';
   nameDeg2 += `${examNames[1].perfect/examNames[1].count*100},${examNames[1].good/examNames[1].count*100},${examNames[1].bad/examNames[1].count*100}`;
+  let name2='';
+  name2 += `'${examNames[1].name}'`;
   let nameDeg3= '';
   nameDeg3 += `${examNames[2].perfect/examNames[2].count*100},${examNames[2].good/examNames[2].count*100},${examNames[2].bad/examNames[2].count*100}`;
+  let name3='';
+  name3 += `'${examNames[2].name}'`;
 
-  let eDef1Date = '';
-  for (exam of eDef1){
-    eDef1Date += `'${exam.date}',`;
+  let eDefDate = '';
+  for (exam of eDate){
+    eDefDate += `'${exam.date}',`;
   }
   let eDefOne = '';
   for (exam of eDef1){
@@ -86,7 +92,7 @@ module.exports.chart = function(navBar, menuLink, examDatas, examNames, examHour
                 labels: [${examDate}'Date'],
                 datasets: [
                 {
-                    label: "평균 오차율", 
+                    label: "평균 유사도", 
                     backgroundColor: ["#8e5ea2", "#1c86a3", "#3e95cd", "#1ca37d", "#3cba9f", "#abb04a", "#dbb769", "#f0af7a", "#e8c3b9", "#c45850"],
                     data: [${smrAverage}'0']
                 }
@@ -120,7 +126,7 @@ module.exports.chart = function(navBar, menuLink, examDatas, examNames, examHour
             options: {
               title: {
                 display: true,
-                text: '신발 종류별 전체 평균 오차율'
+                text: '신발 종류별 전체 평균 유사도'
               }
             }
           });
@@ -187,7 +193,7 @@ module.exports.chart = function(navBar, menuLink, examDatas, examNames, examHour
             new Chart(document.getElementById("line-chart"), {
               type: 'line',
               data: {
-              labels: [${eDef1Date}],
+              labels: [${eDefDate}],
               datasets: [{ 
                 data: [${eDefOne}],
                 label: "Sacai x LDWaffle VB",
@@ -234,7 +240,7 @@ module.exports.chart = function(navBar, menuLink, examDatas, examNames, examHour
                 options: {
                   title: {
                     display: true,
-                    text: 'Sacai x LDWaffle VB'
+                    text: ${name1}
                     }
                   }
                 });
@@ -256,7 +262,7 @@ module.exports.chart = function(navBar, menuLink, examDatas, examNames, examHour
                 options: {
                   title: {
                     display: true,
-                    text: 'TRIPLE S TRAINERS YG'
+                    text: ${name2}
                     }
                   }
                 });
@@ -278,7 +284,7 @@ module.exports.chart = function(navBar, menuLink, examDatas, examNames, examHour
                 options: {
                   title: {
                     display: true,
-                    text: 'Jordan 1 Retro High Off-White Chicago'
+                    text: ${name3}
                     }
                   }
                 });

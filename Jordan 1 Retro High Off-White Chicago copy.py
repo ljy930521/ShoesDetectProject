@@ -27,8 +27,8 @@ if __name__ == '__main__':
  
 MIN_MATCH_COUNT = 10
  
-img1 = cv2.imread('./python/Jordan 1 Retro High Off-White Chicago.jpg',0) # queryImage
-img2 = cv2.imread('./python/train.jpg',0) # trainImage
+img1 = cv2.imread('Jordan 1 Retro High Off-White Chicago.jpg',0) # queryImage
+img2 = cv2.imread('train.jpg',0) # trainImage
  
 # Initiate SIFT detector
 
@@ -52,7 +52,6 @@ good = []
 for m,n in matches:
     if m.distance < 0.98*n.distance:
         good.append(m)
-good
 
 
 name = []
@@ -94,6 +93,6 @@ img3 = cv2.drawMatches(img1,kp1,img2,kp2,good,None,**draw_params)
 now = datetime.datetime.now().strftime("%Y-%m-%d %H%M%S.") 
 #plt.imshow(img3, 'gray'),plt.show()
 #cv2.imshow("gray", img3)
-cv2.imwrite('../public/photo/'+str(now)+name, img3)
+cv2.imwrite('./public/photo/'+str(now)+name, img3)
 print(str(now)+name)
 cv2.waitKey(0)

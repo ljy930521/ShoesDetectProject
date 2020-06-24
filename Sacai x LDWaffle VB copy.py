@@ -28,8 +28,8 @@ if __name__ == '__main__':
  
 MIN_MATCH_COUNT = 10
  
-img1 = cv2.imread('./python/Sacai x LDWaffle VB.jpg',0) # queryImage
-img2 = cv2.imread('./python/train.jpg',0) # trainImage
+img1 = cv2.imread('Sacai x LDWaffle VB.jpg',0) # queryImage
+img2 = cv2.imread('train.jpg',0) # trainImage
  
 # Initiate SIFT detector
 
@@ -48,7 +48,6 @@ search_params = dict(checks = 500) #특성매칭을 위한 반복 횟수 크게�
 flann = cv2.FlannBasedMatcher(index_params, search_params)
 
 matches = flann.knnMatch(des1,des2,k=2)#k=? ?번째로 가까운 매칭 결과까지 리턴
-print(len(matches))
 
 good = []
 
@@ -96,6 +95,6 @@ img3 = cv2.drawMatches(img1,kp1,img2,kp2,good,None,**draw_params)
 now = datetime.datetime.now().strftime("%Y-%m-%d %H%M%S.") 
 #plt.imshow(img3, 'gray'),plt.show()
 #cv2.imshow("gray", img3)
-cv2.imwrite('../public/photo/'+str(now)+name, img3)
+cv2.imwrite('./public/photo/'+str(now)+name, img3)
 print(str(now)+name)
 cv2.waitKey(0)
